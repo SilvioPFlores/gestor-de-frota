@@ -14,6 +14,10 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 
 <body class="font-sans antialiased bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -39,8 +43,8 @@
                         </a>
                     @endcan
 
-                    <a href="#"
-                        class="flex items-center space-x-2 px-4 py-2.5 rounded-lg transition hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-600 dark:text-gray-400">
+                    <a href="{{ route('vehicles.index') }}"
+                        class="flex items-center space-x-2 px-4 py-2.5 rounded-lg transition {{ request()->routeIs('vehicles.index') ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400 font-semibold' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-600 dark:text-gray-400' }}">
                         <span>🚗 Veículos</span>
                     </a>
                 </nav>

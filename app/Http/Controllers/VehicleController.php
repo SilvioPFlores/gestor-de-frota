@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Vehicle;
+use Illuminate\Http\Request;
+
+class VehicleController extends Controller
+{
+    // Listagem de veículos
+    public function index()
+    {
+        $vehicles = Vehicle::orderBy('id', 'desc')->get();
+        return view('vehicles.index', compact('vehicles'));
+    }
+
+    // Processa o cadastro de um novo veículo
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'plate'       => 'required|string|unique:vehicles,plate|max:10',
+            'year'        => 'required|integer|min:1900|max:'.(date('Y') + 1),
+            'brand'       => 'required|string|max:255',
+            'model'       => 'required|string|max:255',
+            'color'       => 'required|string|max:255',
+            'fuel'        => 'required|string|max:255',
+            'current_km'  => 'required|integer|min:0',
+            'status'      => 'required|string|in:Disponível,Em Uso,Manutenção,Inativo',
+            'notes'       => 'nullable|string',
+        ]);
+
+        Vehicle::create($validated);
+
+        return redirect()->back()->with('success', 'Veículo cadastrado com sucesso!');
+    }
+}
