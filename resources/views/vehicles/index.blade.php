@@ -8,7 +8,7 @@
                 </h2>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Cadastro e situação da frota.</p>
             </div>
-            <button onclick="document.getElementById('modal-veiculo').classList.remove('hidden')" class="inline-flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white font-medium px-4 py-2.5 rounded-xl transition shadow-sm text-sm cursor-pointer">
+            <button onclick="openCreateModal()" class="inline-flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white font-medium px-4 py-2.5 rounded-xl transition shadow-sm text-sm cursor-pointer">
                 <span>+ Novo veículo</span>
             </button>
         </div>
@@ -46,9 +46,14 @@
                                         {{ $vehicle->status }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-right space-x-2">
-                                    <button class="text-gray-400 hover:text-gray-600 transition">✏️</button>
-                                    <button class="text-gray-400 hover:text-red-500 transition">🗑️</button>
+                                <td class="px-6 py-4 text-right space-x-3">
+                                    <button onclick="openEditModal({{ $vehicle->toJson() }})" class="text-gray-400 hover:text-blue-500 transition cursor-pointer">✏️</button>
+                                    
+                                    <form action="{{ route('vehicles.destroy', $vehicle) }}" method="POST" class="inline-block" onsubmit="return confirm('Tem certeza que deseja excluir o veículo {{ $vehicle->plate }}? Esta ação não pode ser desfeita.');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-gray-400 hover:text-red-500 transition cursor-pointer">🗑️</button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
@@ -65,64 +70,70 @@
     </div>
 
     <div id="modal-veiculo" class="hidden fixed inset-0 z-[9999] overflow-y-auto flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-        
         <div class="bg-white dark:bg-gray-800 w-full max-w-xl rounded-2xl p-6 shadow-2xl relative">
             
             <button onclick="document.getElementById('modal-veiculo').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-white text-2xl cursor-pointer">
                 &times;
             </button>
 
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Novo veículo</h3>
+            <h3 id="modal-title" class="text-xl font-bold text-gray-900 dark:text-white mb-6">Novo veículo</h3>
 
-            <form action="{{ route('vehicles.store') }}" method="POST" class="space-y-4">
+            <form id="form-veiculo" action="{{ route('vehicles.store') }}" method="POST" class="space-y-4">
                 @csrf
+                <div id="method-container"></div>
+                
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Placa</label>
-                        <input type="text" name="plate" required placeholder="ABC-1234" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 focus:ring-slate-500 focus:border-slate-500 text-sm">
+                        <input type="text" id="input-plate" name="plate" required placeholder="ABC-1234" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Ano</label>
-                        <input type="number" name="year" required placeholder="2024" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 focus:ring-slate-500 focus:border-slate-500 text-sm">
+                        <input type="number" id="input-year" name="year" required placeholder="2024" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Marca</label>
-                        <input type="text" name="brand" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
+                        <input type="text" id="input-brand" name="brand" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Modelo</label>
-                        <input type="text" name="model" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
+                        <input type="text" id="input-model" name="model" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Cor</label>
-                        <input type="text" name="color" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
+                        <input type="text" id="input-color" name="color" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Combustível</label>
-                        <input type="text" name="fuel" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
+                        <input type="text" id="input-fuel" name="fuel" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">KM atual</label>
-                        <input type="number" name="current_km" required value="0" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
+                        <input type="number" id="input-current_km" name="current_km" required value="0" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                        <select name="status" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
+                        <select id="input-status" name="status" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
                             <option value="Disponível">Disponível</option>
                             <option value="Em Uso">Em Uso</option>
                             <option value="Manutenção">Manutenção</option>
                             <option value="Inativo">Inativo</option>
                         </select>
                     </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Observações</label>
+                    <input type="text" id="input-notes" name="notes" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
                 </div>
 
                 <div class="flex justify-end pt-4">
@@ -134,4 +145,34 @@
         </div>
     </div>
 
+    <script>
+        function openCreateModal() {
+            // Configura modal para Novo Veículo
+            document.getElementById('modal-title').innerText = 'Novo veículo';
+            document.getElementById('form-veiculo').action = "{{ route('vehicles.store') }}";
+            document.getElementById('method-container').innerHTML = ''; // Remove o PUT
+            document.getElementById('form-veiculo').reset(); // Limpa os campos
+            document.getElementById('modal-veiculo').classList.remove('hidden');
+        }
+
+        function openEditModal(vehicle) {
+            // Configura modal para Editar Veículo
+            document.getElementById('modal-title').innerText = 'Editar veículo: ' + vehicle.plate;
+            document.getElementById('form-veiculo').action = `/veiculos/${vehicle.id}`;
+            document.getElementById('method-container').innerHTML = '<input type="hidden" name="_method" value="PUT">';
+            
+            // Preenche os campos com os dados do veículo
+            document.getElementById('input-plate').value = vehicle.plate;
+            document.getElementById('input-year').value = vehicle.year;
+            document.getElementById('input-brand').value = vehicle.brand;
+            document.getElementById('input-model').value = vehicle.model;
+            document.getElementById('input-color').value = vehicle.color;
+            document.getElementById('input-fuel').value = vehicle.fuel;
+            document.getElementById('input-current_km').value = vehicle.current_km;
+            document.getElementById('input-status').value = vehicle.status;
+            document.getElementById('input-notes').value = vehicle.notes;
+
+            document.getElementById('modal-veiculo').classList.remove('hidden');
+        }
+    </script>
 </x-app-layout>

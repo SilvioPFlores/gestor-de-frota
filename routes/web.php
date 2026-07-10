@@ -18,6 +18,8 @@ Route::middleware('auth')->group(function () {
  
     Route::get('/veiculos', [VehicleController::class, 'index'])->name('vehicles.index');
     Route::post('/veiculos', [VehicleController::class, 'store'])->name('vehicles.store');
+    Route::put('/veiculos/{vehicle}', [VehicleController::class, 'update'])->name('vehicles.update');
+    Route::delete('/veiculos/{vehicle}', [VehicleController::class, 'destroy'])->name('vehicles.destroy');
 
 });
    

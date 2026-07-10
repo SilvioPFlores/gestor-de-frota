@@ -33,4 +33,31 @@ class VehicleController extends Controller
 
         return redirect()->back()->with('success', 'Veículo cadastrado com sucesso!');
     }
+    // Atualiza um veículo existente
+    public function update(Request $request, Vehicle $vehicle)
+    {
+        $validated = $request->validate([
+            // A regra abaixo ignora o veículo atual para não dar erro de "Placa já cadastrada"
+            'plate'       => 'required|string|max:10|unique:vehicles,plate,' . $vehicle->id,
+            'year'        => 'required|integer|min:1900|max:'.(date('Y') + 1),
+            'brand'       => 'required|string|max:255',
+            'model'       => 'required|string|max:255',
+            'color'       => 'required|string|max:255',
+            'fuel'        => 'required|string|max:255',
+            'current_km'  => 'required|integer|min:0',
+            'status'      => 'required|string|in:Disponível,Em Uso,Manutenção,Inativo',
+            'notes'       => 'nullable|string',
+        ]);
+
+        $vehicle->update($validated);
+
+        return redirect()->back()->with('success', 'Veículo atualizado com sucesso!');
+    }
+
+    // Exclui um veículo
+    public function destroy(Vehicle $vehicle)
+    {
+        $vehicle->delete();
+        return redirect()->back()->with('success', 'Veículo removido da frota!');
+    }
 }
