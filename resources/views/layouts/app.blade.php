@@ -47,6 +47,11 @@
                         class="flex items-center space-x-2 px-4 py-2.5 rounded-lg transition {{ request()->routeIs('vehicles.index') ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400 font-semibold' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-600 dark:text-gray-400' }}">
                         <span>🚗 Veículos</span>
                     </a>
+
+                    <a href="{{ route('drivers.index') }}"
+                        class="flex items-center space-x-2 px-4 py-2.5 rounded-lg transition {{ request()->routeIs('drivers.index') ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400 font-semibold' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-600 dark:text-gray-400' }}">
+                        <span>🪪 Motorista</span>
+                    </a>
                 </nav>
             </div>
 
