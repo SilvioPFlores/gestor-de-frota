@@ -1,7 +1,6 @@
+// Importa o Framework Bootstrap (instalado via NPM)
+import 'bootstrap';
 
-
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
+// Importa o jQuery e o disponibiliza globalmente no ecossistema
+import $ from 'jquery';
+window.$ = window.jQuery = $;
