@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="auto">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +7,8 @@
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-light">
+<body>
 
-    <div class="container py-5">
 
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px; border-radius: 10px;">
@@ -77,7 +76,7 @@
             </div>
         </form>
         
-    </div>
+    
 </div>
 
 @push('scripts')
