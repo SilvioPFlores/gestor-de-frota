@@ -156,7 +156,7 @@
 
             // Valida email
             function validateEmail() {
-                const email = $email.val();
+                const email = $email.val().trim();
                 const dominioPermitido = "unifesp.br";
                 const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
                 const hasDominio = email.split('@')[1];
