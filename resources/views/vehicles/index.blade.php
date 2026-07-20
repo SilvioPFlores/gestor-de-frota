@@ -1,20 +1,9 @@
-<x-app-layout>
-    
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <div>
-                <h2 class="font-bold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Veículos
-                </h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Cadastro e situação da frota.</p>
-            </div>
-            <button onclick="openCreateModal()" class="inline-flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white font-medium px-4 py-2.5 rounded-xl transition shadow-sm text-sm cursor-pointer">
-                <span>+ Novo veículo</span>
-            </button>
-        </div>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-6">
+@section('titulo', 'Veiculos')
+
+@section('content')
+    <div class="container-fluid">
         @if(session('success'))
             <div class="mb-4 p-4 bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-400 rounded-xl font-medium text-sm border border-green-200 dark:border-green-800">
                 {{ session('success') }}
@@ -175,4 +164,4 @@
             document.getElementById('modal-veiculo').classList.remove('hidden');
         }
     </script>
-</x-app-layout>
+@endsection

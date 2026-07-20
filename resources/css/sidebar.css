@@ -1,0 +1,95 @@
+/* Container pai */
+.wrapper {
+    min-height: 100vh;
+}
+
+/* Sidebar expandido (Padrão) */
+#sidebar {
+    width: 250px;
+    min-width: 250px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Sidebar Recolhido (Collapsed) */
+#sidebar.collapsed {
+    width: 75px;
+    min-width: 75px;
+}
+
+/* Esconde o texto suavemente */
+#sidebar.collapsed .sidebar-text {
+    display: none !important;
+}
+
+/* Ajusta o alinhamento dos ícones no estado recolhido */
+#sidebar.collapsed .nav-link {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#sidebar.collapsed .nav-link .icon {
+    margin-right: 0 !important;
+}
+
+#sidebar.collapsed .sidebar-header {
+    justify-content: center !important;
+}
+
+/* Transição do conteúdo principal */
+#main-content {
+    transition: margin 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+/* --- Estilização Geral dos Links do Sidebar --- */
+#sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.7) !important;
+    /* Texto levemente opaco quando inativo */
+    border-radius: 10px;
+    /* Cantos arredondados modernos */
+    padding: 10px 14px;
+    transition: all 0.2s ease-in-out;
+    /* Animação suave para o mouse */
+}
+
+/* --- Efeito ao passar o Mouse (HOVER) --- */
+#sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    /* Fundo translúcido */
+    color: #ffffff !important;
+    /* Texto 100% branco */
+    transform: translateX(3px);
+    /* Leve deslocamento para a direita ao passar o mouse */
+}
+
+/* Quando o menu estiver recolhido (collapsed), desativa o deslocamento lateral */
+#sidebar.collapsed .nav-link:hover {
+    transform: none;
+}
+
+/* --- Estado Ativo (ACTIVE) --- */
+#sidebar .nav-link.active {
+    background-color: #0d6efd !important;
+    /* Cor principal de destaque (Azul Bootstrap) */
+    color: #ffffff !important;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+    /* Sombra suave no item ativo */
+}
+
+/* Garante que o item ativo continue bonitão mesmo se passar o mouse por cima dele */
+#sidebar .nav-link.active:hover {
+    background-color: #0b5ed7 !important;
+    transform: none;
+}
+
+/* Remove a margem do ícone quando a barra lateral estiver recolhida */
+#sidebar.collapsed .nav-link i,
+#sidebar.collapsed .nav-link .icon {
+    margin-right: 0 !important;
+}

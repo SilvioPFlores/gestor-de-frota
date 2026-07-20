@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Motoristas</title>
-    
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-light">
+@extends('layouts.app')
 
-    <div class="container py-5">
-        
+@section('titulo', 'Motoristas')
+
+@section('content')
+    <div class="container-fluid"> 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="fw-bold text-dark mb-0">Motoristas</h2>
@@ -279,5 +272,4 @@
             }
         });
     </script>
-</body>
-</html>
+@endsection

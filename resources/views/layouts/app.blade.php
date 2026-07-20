@@ -6,86 +6,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- FONTAWESOME -->
+    <script src="https://kit.fontawesome.com/c1e5b3a1f7.js" crossorigin="anonymous"></script>
 
-    <style>
-        [x-cloak] { display: none !important; }
-    </style>
+    <title>@yield('title', 'Gestor de Frota')</title>
 </head>
 
-<body class="font-sans antialiased bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-    <div class="flex h-screen overflow-hidden">
+<body>
 
-        <aside
-            class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col justify-between">
-            <div class="p-5">
-                <div class="flex items-center space-x-2 font-bold text-xl mb-10 text-indigo-600 dark:text-indigo-400">
-                    <span>🚚 Gestor de Frota</span>
-                </div>
+    <div class="d-flex wrapper">
+        <!-- Inclui o Menu Lateral separado -->
+        @include('partials.sidebar')
 
-                <nav class="space-y-2">
-                    <a href="{{ route('dashboard') }}"
-                        class="flex items-center space-x-2 px-4 py-2.5 rounded-lg transition {{ request()->routeIs('dashboard') ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400 font-semibold' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50' }}">
-                        <span>📊 Dashboard</span>
-                    </a>
-
-                    @can('gerenciar usuarios')
-                        <a href="{{ route('users.index') }}"
-                            class="flex items-center space-x-2 px-4 py-2.5 rounded-lg transition {{ request()->routeIs('users.index') ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400 font-semibold' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-600 dark:text-gray-400' }}">
-                            <span>👥 Usuários</span>
-                        </a>
-                    @endcan
-
-                    <a href="{{ route('vehicles.index') }}"
-                        class="flex items-center space-x-2 px-4 py-2.5 rounded-lg transition {{ request()->routeIs('vehicles.index') ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400 font-semibold' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-600 dark:text-gray-400' }}">
-                        <span>🚗 Veículos</span>
-                    </a>
-
-                    <a href="{{ route('drivers.index') }}"
-                        class="flex items-center space-x-2 px-4 py-2.5 rounded-lg transition {{ request()->routeIs('drivers.index') ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400 font-semibold' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-600 dark:text-gray-400' }}">
-                        <span>🪪 Motorista</span>
-                    </a>
-                </nav>
-            </div>
-
-            <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
-                <div class="truncate mr-2">
-                    <p class="text-sm font-semibold truncate">{{ Auth::user()->name }}</p>
-                    <p class="text-xs text-gray-400 truncate">{{ Auth::user()->roles->first()?->name ?? 'Sem Nível' }}
-                    </p>
-                </div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="text-gray-400 hover:text-red-500 transition">
-                        🚪
-                    </button>
-                </form>
-            </div>
-        </aside>
-
-        <div class="flex-1 flex flex-col overflow-y-auto">
-            @if (isset($header))
-                <header
-                    class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 py-4 px-6">
-                    <div class="max-w-7xl mx-auto">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-
-            <main class="py-6 px-6 max-w-7xl w-full mx-auto">
-                {{ $slot }}
-            </main>
-        </div>
-
+        <!-- Área Central onde as páginas específicas serão renderizadas -->
+        <main id="main-content" class="flex-grow-1 p-4">
+            @yield('content')
+        </main>
     </div>
+
+    <!-- 3. Scripts: jQuery e Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script do Sidebar -->
+    <script>
+        $(document).ready(function() {
+            // 1. Restaura o estado salvo no navegador ao carregar a página
+            if (localStorage.getItem('sidebarState') === 'collapsed') {
+                $('#sidebar').addClass('collapsed');
+            }
+
+            // 2. Alterna o estado ao clicar no botão
+            $('#sidebarToggle').on('click', function() {
+                $('#sidebar').toggleClass('collapsed');
+                console.log('apertou');
+
+                // Salva a preferência
+                if ($('#sidebar').hasClass('collapsed')) {
+                    localStorage.setItem('sidebarState', 'collapsed');
+                } else {
+                    localStorage.setItem('sidebarState', 'expanded');
+                }
+            });
+        });
+    </script>
+
+    <!-- Permite que telas filhas injetem JavaScript específico caso precise -->
+    @stack('scripts')
 </body>
 
 </html>
