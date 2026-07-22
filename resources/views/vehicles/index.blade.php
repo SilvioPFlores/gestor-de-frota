@@ -3,51 +3,72 @@
 @section('titulo', 'Veiculos')
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid py-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="h4 mb-1 text-dark fw-bold">
+                    Veículos
+                </h2>
+                <p class="text-muted small mb-0">Cadastro e situação da frota.</p>
+            </div>
+            <button type="button" class="btn btn-dark" id="btn-novo-veiculo">
+                <i class="bi bi-plus-lg"></i> + Novo veículo
+            </button>
+        </div>
+        
+        <!-- Alerta de Sucesso -->
         @if(session('success'))
-            <div class="mb-4 p-4 bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-400 rounded-xl font-medium text-sm border border-green-200 dark:border-green-800">
-                {{ session('success') }}
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                <span class="fw-medium">{{ session('success') }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-2xl border border-gray-100 dark:border-gray-700/60">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-sm">
-                    <thead>
-                        <tr class="border-b border-gray-100 dark:border-gray-700 bg-gray-50/70 dark:bg-gray-700/40 text-gray-500 dark:text-gray-400 font-medium">
-                            <th class="px-6 py-4">Placa</th>
-                            <th class="px-6 py-4">Veículo</th>
-                            <th class="px-6 py-4">Ano</th>
-                            <th class="px-6 py-4">KM</th>
-                            <th class="px-6 py-4">Status</th>
-                            <th class="px-6 py-4 text-right">Ações</th>
+        <!-- Tabela de Veículos -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0 table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-muted">
+                        <tr>
+                            <th class="ps-4">Placa</th>
+                            <th>Veículo</th>
+                            <th>Ano</th>
+                            <th>KM</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Ações</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700 text-gray-700 dark:text-gray-300">
+                    <tbody class="border-top-0">
                         @forelse($vehicles as $vehicle)
-                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-700/20 transition">
-                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white uppercase">{{ $vehicle->plate }}</td>
-                                <td class="px-6 py-4 capitalize">{{ $vehicle->brand }} {{ $vehicle->model }}</td>
-                                <td class="px-6 py-4">{{ $vehicle->year }}</td>
-                                <td class="px-6 py-4">{{ number_format($vehicle->current_km, 0, ',', '.') }}</td>
-                                <td class="px-6 py-4">
-                                    <span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600">
+                            <tr>
+                                <td class="ps-4 fw-bold text-uppercase">{{ $vehicle->plate }}</td>
+                                <td class="text-capitalize">{{ $vehicle->brand }} {{ $vehicle->model }}</td>
+                                <td>{{ $vehicle->year }}</td>
+                                <td>{{ number_format($vehicle->current_km, 0, ',', '.') }}</td>
+                                <td>
+                                    <!-- Badges dinâmicas baseadas no status (Opcional: você pode customizar as cores) -->
+                                    <span class="badge bg-secondary rounded-pill px-3 py-2 fw-medium">
                                         {{ $vehicle->status }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-right space-x-3">
-                                    <button onclick="openEditModal({{ $vehicle->toJson() }})" class="text-gray-400 hover:text-blue-500 transition cursor-pointer">✏️</button>
+                                <td class="text-end pe-4">
+                                    <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-edit" data-vehicle="{{ json_encode($vehicle) }}">
+                                        ✏️ Editar
+                                    </button>
                                     
-                                    <form action="{{ route('vehicles.destroy', $vehicle) }}" method="POST" class="inline-block" onsubmit="return confirm('Tem certeza que deseja excluir o veículo {{ $vehicle->plate }}? Esta ação não pode ser desfeita.');">
+                                    <form action="{{ route('vehicles.destroy', $vehicle) }}" method="POST" class="d-inline-block form-delete">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-gray-400 hover:text-red-500 transition cursor-pointer">🗑️</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            🗑️
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-10 text-center text-gray-400">
+                                <td colspan="6" class="text-center py-5 text-muted">
                                     Nenhum veículo cadastrado no momento.
                                 </td>
                             </tr>
@@ -58,110 +79,144 @@
         </div>
     </div>
 
-    <div id="modal-veiculo" class="hidden fixed inset-0 z-[9999] overflow-y-auto flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-xl rounded-2xl p-6 shadow-2xl relative">
-            
-            <button onclick="document.getElementById('modal-veiculo').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-white text-2xl cursor-pointer">
-                &times;
-            </button>
-
-            <h3 id="modal-title" class="text-xl font-bold text-gray-900 dark:text-white mb-6">Novo veículo</h3>
-
-            <form id="form-veiculo" action="{{ route('vehicles.store') }}" method="POST" class="space-y-4">
-                @csrf
-                <div id="method-container"></div>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Placa</label>
-                        <input type="text" id="input-plate" name="plate" required placeholder="ABC-1234" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Ano</label>
-                        <input type="number" id="input-year" name="year" required placeholder="2024" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
-                    </div>
+    <!-- Modal de Veículo -->
+    <div class="modal fade" id="modalVeiculo" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="modal-title">Novo veículo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                    <form id="form-veiculo" action="{{ route('vehicles.store') }}" method="POST">
+                        @csrf
+                        <div id="method-container"></div>
+                        
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Placa</label>
+                                <input type="text" id="input-plate" name="plate" required placeholder="ABC-1234 ou ABC1D23" class="form-control" maxlength="8">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Ano</label>
+                                <input type="number" id="input-year" name="year" required placeholder="2024" class="form-control">
+                            </div>
+                        </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Marca</label>
-                        <input type="text" id="input-brand" name="brand" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Modelo</label>
-                        <input type="text" id="input-model" name="model" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
-                    </div>
-                </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Marca</label>
+                                <input type="text" id="input-brand" name="brand" required class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Modelo</label>
+                                <input type="text" id="input-model" name="model" required class="form-control">
+                            </div>
+                        </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Cor</label>
-                        <input type="text" id="input-color" name="color" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Combustível</label>
-                        <input type="text" id="input-fuel" name="fuel" required class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
-                    </div>
-                </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Cor</label>
+                                <input type="text" id="input-color" name="color" required class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Combustível</label>
+                                <input type="text" id="input-fuel" name="fuel" required class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">KM atual</label>
+                                <input type="number" id="input-current_km" name="current_km" required value="0" class="form-control">
+                            </div>
+                        </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">KM atual</label>
-                        <input type="number" id="input-current_km" name="current_km" required value="0" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                        <select id="input-status" name="status" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
-                            <option value="Disponível">Disponível</option>
-                            <option value="Em Uso">Em Uso</option>
-                            <option value="Manutenção">Manutenção</option>
-                            <option value="Inativo">Inativo</option>
-                        </select>
-                    </div>
-                </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Status</label>
+                            <select id="input-status" name="status" class="form-select">
+                                <option value="Disponível">Disponível</option>
+                                <option value="Em Uso">Em Uso</option>
+                                <option value="Manutenção">Manutenção</option>
+                                <option value="Inativo">Inativo</option>
+                            </select>
+                        </div>
 
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Observações</label>
-                    <input type="text" id="input-notes" name="notes" class="w-full rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-900 px-3 py-2.5 text-sm">
+                        <div class="d-flex justify-content-end border-top pt-3">
+                            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-dark px-4">Salvar</button>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="flex justify-end pt-4">
-                    <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-medium px-6 py-2.5 rounded-xl transition shadow-sm text-sm cursor-pointer">
-                        Salvar
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
-    <script>
-        function openCreateModal() {
-            // Configura modal para Novo Veículo
-            document.getElementById('modal-title').innerText = 'Novo veículo';
-            document.getElementById('form-veiculo').action = "{{ route('vehicles.store') }}";
-            document.getElementById('method-container').innerHTML = ''; // Remove o PUT
-            document.getElementById('form-veiculo').reset(); // Limpa os campos
-            document.getElementById('modal-veiculo').classList.remove('hidden');
-        }
+    <!-- Scripts jQuery e Máscaras -->
+    <script type="module">
+        $(document).ready(function() {
+            // Inicializa a instância do Modal do Bootstrap
+            const modalVeiculo = new bootstrap.Modal(document.getElementById('modalVeiculo'));
 
-        function openEditModal(vehicle) {
-            // Configura modal para Editar Veículo
-            document.getElementById('modal-title').innerText = 'Editar veículo: ' + vehicle.plate;
-            document.getElementById('form-veiculo').action = `/veiculos/${vehicle.id}`;
-            document.getElementById('method-container').innerHTML = '<input type="hidden" name="_method" value="PUT">';
-            
-            // Preenche os campos com os dados do veículo
-            document.getElementById('input-plate').value = vehicle.plate;
-            document.getElementById('input-year').value = vehicle.year;
-            document.getElementById('input-brand').value = vehicle.brand;
-            document.getElementById('input-model').value = vehicle.model;
-            document.getElementById('input-color').value = vehicle.color;
-            document.getElementById('input-fuel').value = vehicle.fuel;
-            document.getElementById('input-current_km').value = vehicle.current_km;
-            document.getElementById('input-status').value = vehicle.status;
-            document.getElementById('input-notes').value = vehicle.notes;
+            // 1. Abrir modal para NOVO VEÍCULO
+            $('#btn-novo-veiculo').on('click', function() {
+                $('#modal-title').text('Novo veículo');
+                $('#form-veiculo').attr('action', "{{ route('vehicles.store') }}");
+                $('#method-container').empty(); // Remove o PUT
+                $('#form-veiculo')[0].reset(); // Limpa os campos
+                modalVeiculo.show();
+            });
 
-            document.getElementById('modal-veiculo').classList.remove('hidden');
-        }
+            // 2. Abrir modal para EDITAR VEÍCULO
+            $('.btn-edit').on('click', function() {
+                // Recupera os dados do objeto JSON injetado no botão
+                let vehicle = $(this).data('vehicle');
+                
+                $('#modal-title').text('Editar veículo: ' + vehicle.plate);
+                $('#form-veiculo').attr('action', `/veiculos/${vehicle.id}`); // Ajuste para a sua rota exata
+                $('#method-container').html('<input type="hidden" name="_method" value="PUT">');
+                
+                // Preenche os inputs
+                $('#input-plate').val(vehicle.plate);
+                $('#input-year').val(vehicle.year);
+                $('#input-brand').val(vehicle.brand);
+                $('#input-model').val(vehicle.model);
+                $('#input-color').val(vehicle.color);
+                $('#input-fuel').val(vehicle.fuel);
+                $('#input-current_km').val(vehicle.current_km);
+                $('#input-status').val(vehicle.status);
+
+                modalVeiculo.show();
+            });
+
+            // 3. Validação de Exclusão
+            $('.form-delete').on('submit', function(e) {
+                if (!confirm('Tem certeza que deseja excluir este veículo? Esta ação não pode ser desfeita.')) {
+                    e.preventDefault();
+                }
+            });
+
+            // 4. Máscara Inteligente para Placa (Mercosul e Antiga)
+            $('#input-plate').on('input', function() {
+                let value = $(this).val().toUpperCase().replace(/[^A-Z0-9]/g, ''); // Apenas letras e números
+                
+                if (value.length > 7) {
+                    value = value.substring(0, 7);
+                }
+
+                // Se já digitou 5 caracteres ou mais, verifica o formato
+                if (value.length >= 5) {
+                    // Verifica se o 5º caractere (índice 4) é uma letra (Padrão Mercosul: ABC1D23)
+                    if (/[A-Z]/.test(value.charAt(4))) {
+                        // Deixa sem hífen (Mercosul)
+                    } else {
+                        // Padrão antigo: adiciona o hífen (ABC-1234)
+                        value = value.replace(/^([A-Z]{3})([0-9]{1,4})$/, "$1-$2");
+                    }
+                } else if (value.length > 3 && !/[0-9]/.test(value.charAt(3))) {
+                    // Impede de digitar letra na 4ª posição (sempre será número em ambos os padrões)
+                    value = value.substring(0, 3);
+                }
+
+                $(this).val(value);
+            });
+        });
     </script>
 @endsection
