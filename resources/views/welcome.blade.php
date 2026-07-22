@@ -44,6 +44,8 @@
                             </a>
                         @endif
                     @endauth
+
+                    <a href="{{ url('/limpar-tudo') }}">Limpa cache</a>
                 </nav>
             @endif
         </header>

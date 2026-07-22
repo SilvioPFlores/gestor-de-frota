@@ -1,10 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{ProfileController,UserController,VehicleController,DriverController};
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/limpar-tudo', function() {
+    Artisan::call('optimize:clear');
+    return "Cache limpo com sucesso!";
 });
 
 Route::get('/dashboard', function () {
