@@ -93,3 +93,42 @@
 #sidebar.collapsed .nav-link .icon {
     margin-right: 0 !important;
 }
+/* Reseta o estilo do botão de logout para parecer um link normal do menu */
+#sidebar .btn-logout {
+    background: transparent;
+    border: none;
+    text-align: left;
+    width: 100%;
+}
+
+/* Transição do efeito hover no logout */
+#sidebar .btn-logout:hover {
+    background-color: rgba(220, 53, 69, 0.15) !important; /* Fundo vermelho suave ao passar o mouse */
+    transform: translateX(3px);
+}
+
+/* Garante o alinhamento centralizado do botão quando a sidebar estiver recolhida */
+#sidebar.collapsed .btn-logout {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#sidebar.collapsed .btn-logout:hover {
+    transform: none;
+}
+
+/* Tamanhos de fonte auxiliares para o card do usuário */
+.fs-7 { font-size: 0.875rem; }
+.fs-8 { font-size: 0.75rem; }
+
+/* Ajuste do perfil quando a sidebar estiver recolhida */
+#sidebar.collapsed .user-info {
+    justify-content: center;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#sidebar.collapsed .user-info .avatar {
+    margin-right: 0 !important;
+}

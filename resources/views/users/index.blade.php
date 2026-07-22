@@ -1,79 +1,106 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Gerenciamento de Usuários e Níveis de Acesso
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+@section('title', 'Gerenciamento de Usuários')
 
-            @if(session('success'))
-                <div class="p-4 bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-400 rounded-lg font-medium text-sm">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if(session('error'))
-                <div class="p-4 bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-400 rounded-lg font-medium text-sm">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-                                    <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Nome</th>
-                                    <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">E-mail</th>
-                                    <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Nível Atual</th>
-                                    <th class="px-6 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-right">Alterar Nível</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                                @foreach($users as $user)
-                                    <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-700/20 transition">
-                                        <td class="px-6 py-4 font-medium">{{ $user->name }}</td>
-                                        <td class="px-6 py-4 text-gray-500 dark:text-gray-400">{{ $user->email }}</td>
-                                        <td class="px-6 py-4">
-                                            @php
-                                                $roleName = $user->roles->first()?->name ?? 'Sem Nível';
-                                                $badgeColor = match($roleName) {
-                                                    'Admin' => 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200',
-                                                    'Gestor' => 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200',
-                                                    default => 'bg-gray-50 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400 border-gray-200',
-                                                };
-                                            @endphp
-                                            <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border {{ $badgeColor }}">
-                                                {{ $roleName }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 text-right">
-                                            <form action="{{ route('users.update', $user) }}" method="POST" class="inline-flex items-center space-x-2">
-                                                @csrf
-                                                @method('PUT')
-                                                <select name="role" class="text-sm rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:ring-indigo-500 focus:border-indigo-500 py-1 pl-2 pr-8">
-                                                    @foreach($roles as $role)
-                                                        <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
-                                                            {{ $role->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1.5 rounded-lg transition font-medium shadow-sm">
-                                                    Salvar
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
+@section('content')
+<div class="container-fluid">
+    
+    <!-- Cabeçalho da Página -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="h4 mb-1 fw-bold text-dark">Gerenciamento de Usuários</h2>
+            <p class="text-muted mb-0 fs-7">Gerencie os níveis e permissões de acesso dos colaboradores.</p>
         </div>
     </div>
-</x-app-layout>
+
+    <!-- Alertas de Feedback -->
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+            <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+            <i class="fa-solid fa-circle-exclamation me-2"></i> {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+    @endif
+
+    <!-- Card Principal com Tabela -->
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light border-bottom">
+                        <tr>
+                            <th class="ps-4 py-3 text-uppercase fs-8 text-muted fw-semibold">Nome</th>
+                            <th class="py-3 text-uppercase fs-8 text-muted fw-semibold">E-mail</th>
+                            <th class="py-3 text-uppercase fs-8 text-muted fw-semibold">Nível Atual</th>
+                            <th class="pe-4 py-3 text-uppercase fs-8 text-muted fw-semibold text-end">Alterar Nível</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($users as $user)
+                            <tr>
+                                <td class="ps-4 fw-medium text-dark">
+                                    {{ $user->name }}
+                                </td>
+                                <td class="text-muted">
+                                    {{ $user->email }}
+                                </td>
+                                <td>
+                                    @php
+                                        $roleName = $user->roles->first()?->name ?? 'Sem Nível';
+                                        
+                                        // Estilização das Badges usando cores do Bootstrap 5
+                                        $badgeClass = match($roleName) {
+                                            'Admin'  => 'bg-danger-subtle text-danger border border-danger-subtle',
+                                            'Gestor' => 'bg-primary-subtle text-primary border border-primary-subtle',
+                                            default  => 'bg-secondary-subtle text-secondary border border-secondary-subtle',
+                                        };
+                                    @endphp
+                                    <span class="badge rounded-pill px-3 py-2 fw-semibold {{ $badgeClass }}">
+                                        {{ $roleName }}
+                                    </span>
+                                </td>
+                                <td class="pe-4 text-end">
+                                    <form action="{{ route('users.update', $user) }}" method="POST" class="d-inline-flex align-items-center justify-content-end gap-2">
+                                        @csrf
+                                        @method('PUT')
+                                        
+                                        <select name="role" class="form-select form-select-sm w-auto">
+                                            @foreach($roles as $role)
+                                                <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
+                                                    {{ $role->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                        <button type="submit" class="btn btn-primary btn-sm px-3 d-flex align-items-center gap-1 shadow-sm">
+                                            <i class="fa-solid fa-floppy-disk"></i> Salvar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        // Esconde os alertas de sucesso ou erro automaticamente após 4 segundos
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 4000);
+    });
+</script>
+@endpush
