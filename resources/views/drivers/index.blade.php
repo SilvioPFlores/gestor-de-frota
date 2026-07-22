@@ -3,7 +3,7 @@
 @section('titulo', 'Motoristas')
 
 @section('content')
-    <div class="container-fluid"> 
+    <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="fw-bold text-dark mb-0">Motoristas</h2>
@@ -14,18 +14,18 @@
             </button>
         </div>
 
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
-        @if($errors->any())
+        @if ($errors->any())
             <div class="alert alert-danger rounded-3" role="alert">
                 <h6 class="fw-bold">Por favor, corrija os erros abaixo:</h6>
                 <ul class="mb-0 ps-3">
-                    @foreach($errors->all() as $error)
+                    @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
@@ -55,19 +55,27 @@
                                 <td class="text-uppercase">{{ $driver->cnh_category }}</td>
                                 <td>{{ \Carbon\Carbon::parse($driver->cnh_expiration)->format('d/m/Y') }}</td>
                                 <td>
-                                    @if($driver->is_active)
-                                        <span class="badge bg-success-subtle text-success px-2.5 py-1.5 rounded-pill">Ativo</span>
+                                    @if ($driver->is_active)
+                                        <span
+                                            class="badge bg-success-subtle text-success px-2.5 py-1.5 rounded-pill">Ativo</span>
                                     @else
-                                        <span class="badge bg-danger-subtle text-danger px-2.5 py-1.5 rounded-pill">Inativo</span>
+                                        <span
+                                            class="badge bg-danger-subtle text-danger px-2.5 py-1.5 rounded-pill">Inativo</span>
                                     @endif
                                 </td>
                                 <td class="px-4 py-3 text-end">
-                                    <button class="btn btn-link text-secondary p-1 btn-editar" data-driver="{{ $driver->toJson() }}">✏️</button>
-                                    
-                                    <form action="{{ route('drivers.destroy', $driver) }}" method="POST" class="d-inline" onsubmit="return confirm('Deseja excluir {{ $driver->name }}?');">
+                                    <button class="btn btn-link text-secondary p-1 btn-editar"
+                                        data-driver="{{ $driver->toJson() }}" title="Editar motorista">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+
+                                    <form action="{{ route('drivers.destroy', $driver) }}" method="POST" class="d-inline"
+                                        onsubmit="return confirm('Deseja excluir {{ $driver->name }}?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-link text-secondary p-1">🗑️</button>
+                                        <button type="submit" class="btn btn-link text-secondary p-1" title="Excluir motorista">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -95,50 +103,62 @@
                     <form id="form-motorista" action="{{ route('drivers.store') }}" method="POST">
                         @csrf
                         <div id="method-container"></div>
-                        
+
                         <div class="mb-3">
                             <label class="form-label fw-semibold text-secondary small">Nome completo</label>
                             <input type="text" id="input-name" name="name" required class="form-control rounded-3">
+                            <div class="invalid-feedback">O Nome informado é inválido.</div>
                         </div>
 
                         <div class="row g-3 mb-3">
                             <div class="col-6">
                                 <label class="form-label fw-semibold text-secondary small">CPF</label>
-                                <input type="text" id="input-cpf" name="cpf" required placeholder="000.000.000-00" class="form-control rounded-3">
+                                <input type="text" id="input-cpf" name="cpf" required placeholder="000.000.000-00"
+                                    class="form-control rounded-3">
                                 <div class="invalid-feedback">O CPF informado é inválido.</div>
                             </div>
                             <div class="col-6">
                                 <label class="form-label fw-semibold text-secondary small">Telefone</label>
-                                <input type="text" id="input-phone" name="phone" placeholder="(00) 00000-0000" class="form-control rounded-3">
+                                <input type="text" id="input-phone" name="phone" placeholder="(00) 00000-0000"
+                                    class="form-control rounded-3">
+                                <div class="invalid-feedback">O telefone informado é inválido.</div>
                             </div>
                         </div>
 
                         <div class="row g-3 mb-3">
                             <div class="col-6">
                                 <label class="form-label fw-semibold text-secondary small">CNH</label>
-                                <input type="text" id="input-cnh" name="cnh" required placeholder="Apenas números" class="form-control rounded-3">
+                                <input type="text" id="input-cnh" name="cnh" required placeholder="Apenas números"
+                                    class="form-control rounded-3">
                                 <div class="invalid-feedback">A CNH informada é inválida.</div>
                             </div>
                             <div class="col-6">
                                 <label class="form-label fw-semibold text-secondary small">Categoria</label>
-                                <input type="text" id="input-cnh_category" name="cnh_category" required placeholder="B, D..." class="form-control rounded-3 text-uppercase">
+                                <input type="text" id="input-cnh_category" name="cnh_category" required
+                                    placeholder="B, D, AE..." class="form-control rounded-3 text-uppercase">
+                                <div class="invalid-feedback">A categoria informada é inválida.</div>
                             </div>
                         </div>
 
                         <div class="row g-3 mb-3">
                             <div class="col-6">
                                 <label class="form-label fw-semibold text-secondary small">Validade CNH</label>
-                                <input type="date" id="input-cnh_expiration" name="cnh_expiration" required class="form-control rounded-3">
+                                <input type="date" id="input-cnh_expiration" name="cnh_expiration" required
+                                    class="form-control rounded-3">
+                                <div class="invalid-feedback">A validade é menor que 30 dias.</div>
                             </div>
                             <div class="col-6">
                                 <label class="form-label fw-semibold text-secondary small">Email</label>
                                 <input type="email" id="input-email" name="email" class="form-control rounded-3">
+                                <div class="invalid-feedback">O Email informado é invalido.</div>
                             </div>
                         </div>
 
                         <div class="form-check form-switch mb-4">
-                            <input class="form-check-input" type="checkbox" role="switch" id="input-is_active" name="is_active" value="1" checked>
-                            <label class="form-check-label fw-semibold text-secondary small" for="input-is_active">Motorista Ativo</label>
+                            <input class="form-check-input" type="checkbox" role="switch" id="input-is_active"
+                                name="is_active" value="1" checked>
+                            <label class="form-check-label fw-semibold text-secondary small"
+                                for="input-is_active">Motorista Ativo</label>
                         </div>
 
                         <div class="d-flex justify-content-end">
@@ -151,8 +171,8 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            
+        document.addEventListener('DOMContentLoaded', function() {
+
             // Instancia o modal usando a instância global do Bootstrap compilada pelo Vite
             const motoristaModal = new bootstrap.Modal('#modal-motorista');
 
@@ -163,10 +183,10 @@
                 $('#method-container').empty();
                 $('#form-motorista')[0].reset();
                 $('#input-is_active').prop('checked', true);
-                
+
                 limparValidacao($('#input-cpf'));
                 limparValidacao($('#input-cnh'));
-                
+
                 motoristaModal.show();
             });
 
@@ -176,15 +196,15 @@
 
                 $('#modal-title').text('Editar motorista: ' + driver.name);
                 $('#form-motorista').attr('action', `/motoristas/${driver.id}`);
-                $('#method-container').html('<input type="hidden" name="_method" value="PUT">';
+                $('#method-container').html('<input type="hidden" name="_method" value="PUT">');
 
                 $('#input-name').val(driver.name);
                 $('#input-cpf').val(driver.cpf);
                 $('#input-phone').val(driver.phone || '');
                 $('#input-cnh').val(driver.cnh);
                 $('#input-cnh_category').val(driver.cnh_category);
-                
-                if(driver.cnh_expiration) {
+
+                if (driver.cnh_expiration) {
                     $('#input-cnh_expiration').val(driver.cnh_expiration.split('T')[0]);
                 }
                 $('#input-email').val(driver.email || '');
@@ -199,9 +219,11 @@
             function aplicarValido(elemento) {
                 elemento.addClass('is-valid').removeClass('is-invalid');
             }
+
             function aplicarInvalido(elemento) {
                 elemento.addClass('is-invalid').removeClass('is-valid');
             }
+
             function limparValidacao(elemento) {
                 elemento.removeClass('is-valid is-invalid');
             }
@@ -209,6 +231,14 @@
             // ==========================================
             // MÁSCARAS E VALIDAÇÕES EM REAL-TIME
             // ==========================================
+            $('#input-name').on('blur', function() {
+                const val = $(this).val();
+                if (val === '') {
+                    limparValidacao($(this));
+                    return;
+                }
+                checkName(val) ? aplicarValido($(this)) : aplicarInvalido($(this));
+            });
 
             $('#input-cpf').on('input', function() {
                 let v = $(this).val().replace(/\D/g, '');
@@ -219,7 +249,10 @@
                 $(this).val(v);
             }).on('blur', function() {
                 const val = $(this).val();
-                if (val === '') { limparValidacao($(this)); return; }
+                if (val === '') {
+                    limparValidacao($(this));
+                    return;
+                }
                 checkCPF(val) ? aplicarValido($(this)) : aplicarInvalido($(this));
             });
 
@@ -229,7 +262,10 @@
                 $(this).val(v);
             }).on('blur', function() {
                 const val = $(this).val();
-                if (val === '') { limparValidacao($(this)); return; }
+                if (val === '') {
+                    limparValidacao($(this));
+                    return;
+                }
                 checkCNH(val) ? aplicarValido($(this)) : aplicarInvalido($(this));
             });
 
@@ -239,12 +275,56 @@
                 v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
                 v = v.replace(/(\d)(\d{4})$/, '$1-$2');
                 $(this).val(v);
+            }).on('blur', function() {
+                const val = $(this).val();
+                if (val === '') {
+                    limparValidacao($(this));
+                    return;
+                }
+                checkPhone(val) ? aplicarValido($(this)) : aplicarInvalido($(this));
             });
+
+            $('#input-cnh_category').on('input', function() {
+                let v = $(this).val().replace(/^[A-Z]+$/, '');
+                if (v.length > 3) v = v.slice(0, 3);
+                $(this).val(v);
+            }).on('blur', function() {
+                const val = $(this).val();
+                if (val === '') {
+                    limparValidacao($(this));
+                    return;
+                }
+                checkCategoryCNH(val) ? aplicarValido($(this)) : aplicarInvalido($(this));
+            });
+
+            $('#input-cnh_expiration').on('blur', function() {
+                const val = $(this).val();
+                if (val === '') {
+                    limparValidacao($(this));
+                    return;
+                }
+                checkExpirationCNH(val) ? aplicarValido($(this)) : aplicarInvalido($(this));
+            });
+
+            $('#input-email').on('blur', function() {
+                const val = $(this).val();
+                if (val === '') {
+                    limparValidacao($(this));
+                    return;
+                }
+                checkEmail(val) ? aplicarValido($(this)) : aplicarInvalido($(this));
+            });
+
+            function checkName(nome) {
+                let regexNome = /^[a-zA-ZÀ-ÿ']+( [a-zA-ZÀ-ÿ']+)+$/;
+                return regexNome.test(nome.trim());
+            }
 
             function checkCPF(cpf) {
                 cpf = cpf.replace(/[^\d]+/g, '');
                 if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
-                let soma = 0, resto;
+                let soma = 0,
+                    resto;
                 for (let i = 1; i <= 9; i++) soma = soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
                 resto = (soma * 10) % 11;
                 if ((resto === 10) || (resto === 11)) resto = 0;
@@ -256,6 +336,15 @@
                 return resto === parseInt(cpf.substring(10, 11));
             }
 
+            function checkPhone(phone) {
+                phone = phone.replace(/\D/g, '');
+                let regexTelefone = /^(?:[14689][0-9]|2[12478]|3([1-5]|[7-8])|5([13-5])|7[193-7])(?:9\d{8}|\d{8})$/;
+                if (phone.length > 9 && phone.length < 12) {
+                    return regexTelefone.test(phone);
+                }
+                return false;
+            }
+
             function checkCNH(cnh) {
                 cnh = cnh.replace(/[^\d]+/g, '');
                 if (cnh.length !== 11 || /^(\d)\1{10}$/.test(cnh)) return false;
@@ -263,12 +352,44 @@
                 for (let i = 0, j = 9; i < 9; i++, j--) sum1 += parseInt(cnh.charAt(i)) * j;
                 let dv1 = sum1 % 11;
                 let dsc = 0;
-                if (dv1 > 9) { dv1 = 0; dsc = 2; }
+                if (dv1 > 9) {
+                    dv1 = 0;
+                    dsc = 2;
+                }
                 let sum2 = 0;
                 for (let i = 0, j = 1; i < 9; i++, j++) sum2 += parseInt(cnh.charAt(i)) * j;
                 let dv2 = sum2 % 11;
-                if (dv2 > 9) { dv2 = 0; } else { dv2 = dv2 - dsc; if (dv2 < 0) dv2 += 11; }
+                if (dv2 > 9) {
+                    dv2 = 0;
+                } else {
+                    dv2 = dv2 - dsc;
+                    if (dv2 < 0) dv2 += 11;
+                }
                 return parseInt(cnh.charAt(9)) === dv1 && parseInt(cnh.charAt(10)) === dv2;
+            }
+
+            function checkCategoryCNH(cat) {
+                var regexCNH = /^(A|B|C|D|E|AB|AC|AD|AE|ACC|C)$/i;
+                if (cat.length <= 3) {
+                    return regexCNH.test(cat.toUpperCase());
+                }
+                return false;
+            }
+
+            function checkExpirationCNH(expiration) {
+                let startDateValue = new Date().toISOString().split('T')[0];
+                let fromParts = startDateValue.split('-');
+                let toParts = expiration.split('-');
+                let startDate = new Date(fromParts[0], fromParts[1] - 1, fromParts[2]);
+                let endDate = new Date(toParts[0], toParts[1] - 1, toParts[2]);
+                let diffTime = endDate - startDate;
+                let diffDays = diffTime / (1000 * 60 * 60 * 24);
+                return diffDays >= 30;
+            }
+
+            function checkEmail(email) {
+                let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return regexEmail.test(email);
             }
         });
     </script>
