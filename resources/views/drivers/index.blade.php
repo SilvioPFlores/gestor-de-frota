@@ -1,16 +1,17 @@
 @extends('layouts.app')
 
-@section('titulo', 'Motoristas')
+@section('title', 'Motoristas')
 
 @section('content')
     <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div class="d-flex align-items-center justify-content-between mb-4">
             <div>
-                <h2 class="fw-bold text-dark mb-0">Motoristas</h2>
-                <small class="text-muted">Cadastro de condutores e validade de CNH.</small>
+                <h2 class="h4 mb-1 fw-bold text-dark">Motoristas</h2>
+                <p class="text-muted small mb-0">Cadastro de condutores e validade de CNH.</p>
             </div>
-            <button id="btn-novo-motorista" class="btn btn-dark px-4 py-2 rounded-3 fw-medium">
-                + Novo motorista
+            <button type="button" class="btn btn-dark" id="btn-novo-motorista">
+                <i class="bi bi-plus-lg"></i> + Novo motorista
             </button>
         </div>
 
@@ -64,19 +65,22 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-3 text-end">
-                                    <button class="btn btn-link text-secondary p-1 btn-editar"
+                                    <div class="d-flex justify-content-end align-items-center flex-nowrap gap-2">
+                                    <button type="button" class="btn btn-sm btn-outline-primary btn-edit"
                                         data-driver="{{ $driver->toJson() }}" title="Editar motorista">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
 
-                                    <form action="{{ route('drivers.destroy', $driver) }}" method="POST" class="d-inline"
+                                    <form action="{{ route('drivers.destroy', $driver) }}" method="POST" class="m-0"
                                         onsubmit="return confirm('Deseja excluir {{ $driver->name }}?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-link text-secondary p-1" title="Excluir motorista">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                                            title="Excluir motorista">
                                             <i class="fa-solid fa-trash-can"></i>
                                         </button>
                                     </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -170,8 +174,8 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    <script type="module">
+        $(document).ready(function() {
 
             // Instancia o modal usando a instância global do Bootstrap compilada pelo Vite
             const motoristaModal = new bootstrap.Modal('#modal-motorista');

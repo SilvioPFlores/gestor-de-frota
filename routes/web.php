@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{ProfileController,UserController,VehicleController,DriverController};
+use App\Http\Controllers\{ProfileController,UserController,TripController,VehicleController,DriverController};
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +32,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/motoristas', [DriverController::class, 'store'])->name('drivers.store');
     Route::put('/motoristas/{driver}', [DriverController::class, 'update'])->name('drivers.update');
     Route::delete('/motoristas/{driver}', [DriverController::class, 'destroy'])->name('drivers.destroy');
+
+    // Rotas de Motoristas
+    Route::get('/viagens', [TripController::class, 'index'])->name('trips.index');
+    Route::post('/viagens', [TripController::class, 'store'])->name('trips.store');
+    Route::put('/viagens/{trip}', [TripController::class, 'update'])->name('trips.update');
+    Route::delete('/viagens/{trip}', [TripController::class, 'destroy'])->name('trips.destroy');
 
 });
    

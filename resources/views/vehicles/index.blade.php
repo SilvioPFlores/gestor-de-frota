@@ -1,24 +1,22 @@
 @extends('layouts.app')
 
-@section('titulo', 'Veiculos')
+@section('title', 'Veiculos')
 
 @section('content')
-    <div class="container-fluid py-4">
+    <div class="container-fluid">
 
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center justify-content-between mb-4">
             <div>
-                <h2 class="h4 mb-1 text-dark fw-bold">
-                    Veículos
-                </h2>
+                <h2 class="h4 mb-1 fw-bold text-dark">Veículos</h2>
                 <p class="text-muted small mb-0">Cadastro e situação da frota.</p>
             </div>
             <button type="button" class="btn btn-dark" id="btn-novo-veiculo">
                 <i class="bi bi-plus-lg"></i> + Novo veículo
             </button>
         </div>
-        
+
         <!-- Alerta de Sucesso -->
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 <span class="fw-medium">{{ session('success') }}</span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -53,17 +51,21 @@
                                     </span>
                                 </td>
                                 <td class="text-end pe-4">
-                                    <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-edit" data-vehicle="{{ json_encode($vehicle) }}">
-                                        ✏️ Editar
-                                    </button>
-                                    
-                                    <form action="{{ route('vehicles.destroy', $vehicle) }}" method="POST" class="d-inline-block form-delete">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            🗑️
+                                    <div class="d-flex justify-content-end align-items-center flex-nowrap gap-2">
+                                        <button type="button" class="btn btn-sm btn-outline-primary btn-edit"
+                                            data-vehicle="{{ json_encode($vehicle) }}">
+                                            <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
-                                    </form>
+
+                                        <form action="{{ route('vehicles.destroy', $vehicle) }}" method="POST"
+                                            class="m-0 form-delete">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -91,15 +93,17 @@
                     <form id="form-veiculo" action="{{ route('vehicles.store') }}" method="POST">
                         @csrf
                         <div id="method-container"></div>
-                        
+
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Placa</label>
-                                <input type="text" id="input-plate" name="plate" required placeholder="ABC-1234 ou ABC1D23" class="form-control" maxlength="8">
+                                <input type="text" id="input-plate" name="plate" required
+                                    placeholder="ABC-1234 ou ABC1D23" class="form-control" maxlength="8">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Ano</label>
-                                <input type="number" id="input-year" name="year" required placeholder="2024" class="form-control">
+                                <input type="number" id="input-year" name="year" required placeholder="2024"
+                                    class="form-control">
                             </div>
                         </div>
 
@@ -125,7 +129,8 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label fw-semibold">KM atual</label>
-                                <input type="number" id="input-current_km" name="current_km" required value="0" class="form-control">
+                                <input type="number" id="input-current_km" name="current_km" required value="0"
+                                    class="form-control">
                             </div>
                         </div>
 
@@ -168,11 +173,12 @@
             $('.btn-edit').on('click', function() {
                 // Recupera os dados do objeto JSON injetado no botão
                 let vehicle = $(this).data('vehicle');
-                
+
                 $('#modal-title').text('Editar veículo: ' + vehicle.plate);
-                $('#form-veiculo').attr('action', `/veiculos/${vehicle.id}`); // Ajuste para a sua rota exata
+                $('#form-veiculo').attr('action',
+                    `/veiculos/${vehicle.id}`); // Ajuste para a sua rota exata
                 $('#method-container').html('<input type="hidden" name="_method" value="PUT">');
-                
+
                 // Preenche os inputs
                 $('#input-plate').val(vehicle.plate);
                 $('#input-year').val(vehicle.year);
@@ -188,34 +194,58 @@
 
             // 3. Validação de Exclusão
             $('.form-delete').on('submit', function(e) {
-                if (!confirm('Tem certeza que deseja excluir este veículo? Esta ação não pode ser desfeita.')) {
+                if (!confirm(
+                        'Tem certeza que deseja excluir este veículo? Esta ação não pode ser desfeita.')) {
                     e.preventDefault();
                 }
             });
 
             // 4. Máscara Inteligente para Placa (Mercosul e Antiga)
             $('#input-plate').on('input', function() {
-                let value = $(this).val().toUpperCase().replace(/[^A-Z0-9]/g, ''); // Apenas letras e números
-                
-                if (value.length > 7) {
-                    value = value.substring(0, 7);
-                }
+                // Pega o valor, converte para maiúsculo e remove caracteres especiais
+                let val = $(this).val().toUpperCase().replace(/[^A-Z0-9]/g, '');
 
-                // Se já digitou 5 caracteres ou mais, verifica o formato
-                if (value.length >= 5) {
-                    // Verifica se o 5º caractere (índice 4) é uma letra (Padrão Mercosul: ABC1D23)
-                    if (/[A-Z]/.test(value.charAt(4))) {
-                        // Deixa sem hífen (Mercosul)
-                    } else {
-                        // Padrão antigo: adiciona o hífen (ABC-1234)
-                        value = value.replace(/^([A-Z]{3})([0-9]{1,4})$/, "$1-$2");
+                let formatada = '';
+
+                for (let i = 0; i < val.length; i++) {
+                    let char = val[i];
+
+                    // Posições 1, 2 e 3: Apenas letras
+                    if (i < 3) {
+                        if (/[A-Z]/.test(char)) {
+                            formatada += char;
+                        } else {
+                            break; // Bloqueia a continuação se for número/símbolo
+                        }
                     }
-                } else if (value.length > 3 && !/[0-9]/.test(value.charAt(3))) {
-                    // Impede de digitar letra na 4ª posição (sempre será número em ambos os padrões)
-                    value = value.substring(0, 3);
+                    // Posição 4: Acrescenta o hífen e aceita apenas número
+                    else if (i === 3) {
+                        if (/[0-9]/.test(char)) {
+                            formatada += '-' + char;
+                        } else {
+                            break;
+                        }
+                    }
+                    // Posição 5: Aceita Letra ou Número (Mercosul ou Antiga)
+                    else if (i === 4) {
+                        if (/[A-Z0-9]/.test(char)) {
+                            formatada += char;
+                        } else {
+                            break;
+                        }
+                    }
+                    // Posições 6 e 7: Apenas números
+                    else if (i < 7) {
+                        if (/[0-9]/.test(char)) {
+                            formatada += char;
+                        } else {
+                            break;
+                        }
+                    }
                 }
 
-                $(this).val(value);
+                // Atualiza o campo com a string tratada
+                $(this).val(formatada);
             });
         });
     </script>
