@@ -26,9 +26,10 @@
             </li>
         @endcan
         <li class="nav-item">
-            <a href="#" class="nav-link text-white d-flex align-items-center">
+            <a href="{{ route('trips.index') }}"
+                class="nav-link d-flex align-items-center {{ request()->routeIs('trips.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-route fa-fw me-3 icon"></i>
-                <span class="sidebar-text">Nova Reserva</span>
+                <span class="sidebar-text">Viagens</span>
             </a>
         </li>
         <li class="nav-item">
@@ -54,13 +55,13 @@
         <div class="d-flex align-items-center mb-3 px-1 user-info">
             <!-- Ícone do Avatar -->
             <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
-                style="width: 38px; height: 38px;">
+                style="width: 38px; height: 38px;"  title="{{ auth()->user()->name }}">
                 <i class="fa-solid fa-user fs-6"></i>
             </div>
 
             <!-- Textos (Escondidos ao recolher) -->
             <div class="sidebar-text text-truncate">
-                <div class="fw-bold text-white fs-7 text-truncate" title="{{ auth()->user()->name }}">
+                <div class="fw-bold text-white fs-7 text-truncate">
                     {{ auth()->user()->name }}
                 </div>
                 <div class="text-white-50 fs-8 text-truncate">
