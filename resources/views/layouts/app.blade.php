@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="auto">
 
 <head>
     <meta charset="utf-8">
@@ -8,11 +8,6 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
     <!-- FONTAWESOME -->
     <script src="https://kit.fontawesome.com/c1e5b3a1f7.js" crossorigin="anonymous"></script>
 
@@ -22,41 +17,16 @@
 <body>
 
     <div class="d-flex wrapper">
-        <!-- Inclui o Menu Lateral separado -->
+
         @include('partials.sidebar')
+        <div class="flex-grow-1 d-flex flex-column">
 
-        <!-- Área Central onde as páginas específicas serão renderizadas -->
-        <main id="main-content" class="flex-grow-1 p-4">
-            @yield('content')
-        </main>
+            @include('partials.header')
+            <main class="flex-grow-1 p-4">
+                @yield('content')
+            </main>
+        </div>
     </div>
-
-    <!-- 3. Scripts: jQuery e Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Script do Sidebar -->
-    <script>
-        $(document).ready(function() {
-            // 1. Restaura o estado salvo no navegador ao carregar a página
-            if (localStorage.getItem('sidebarState') === 'collapsed') {
-                $('#sidebar').addClass('collapsed');
-            }
-
-            // 2. Alterna o estado ao clicar no botão
-            $('#sidebarToggle').on('click', function() {
-                $('#sidebar').toggleClass('collapsed');
-                console.log('apertou');
-
-                // Salva a preferência
-                if ($('#sidebar').hasClass('collapsed')) {
-                    localStorage.setItem('sidebarState', 'collapsed');
-                } else {
-                    localStorage.setItem('sidebarState', 'expanded');
-                }
-            });
-        });
-    </script>
-
     <!-- Permite que telas filhas injetem JavaScript específico caso precise -->
     @stack('scripts')
 </body>
