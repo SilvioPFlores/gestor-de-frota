@@ -4,7 +4,7 @@
     "name": "sweetalert"
   },
   "resources/css/app.css": {
-    "file": "assets/app-BW1ug5ch.css",
+    "file": "assets/app-sldgfmqk.css",
     "name": "app",
     "names": [
       "app.css"
@@ -22,9 +22,18 @@
     ]
   },
   "resources/js/drivers.js": {
-    "file": "assets/drivers-DRpOJBuw.js",
+    "file": "assets/drivers-CPMb4UDc.js",
     "name": "drivers",
     "src": "resources/js/drivers.js",
+    "isEntry": true,
+    "imports": [
+      "_sweetalert-NanH6EHu.js"
+    ]
+  },
+  "resources/js/trips.js": {
+    "file": "assets/trips-DIMnlySh.js",
+    "name": "trips",
+    "src": "resources/js/trips.js",
     "isEntry": true,
     "imports": [
       "_sweetalert-NanH6EHu.js"

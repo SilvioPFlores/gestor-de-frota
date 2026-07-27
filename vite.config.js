@@ -10,8 +10,7 @@ export default defineConfig({
 
                 'resources/js/drivers.js',
                 'resources/js/vehicles.js',
-                /*'resources/js/users.js',
-                'resources/js/trips.js',*/
+                'resources/js/trips.js',
             ],
             refresh: true,
         }),

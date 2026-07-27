@@ -5,7 +5,7 @@ import { confirmDelete } from './sweetalert';
 $(function () {
 
     // Instancia o modal usando a instância global do Bootstrap compilada pelo Vite
-    const motoristaModal = new Modal(document.getElementById('modal-motorista'));
+    const modalMotorista = new Modal(document.getElementById('modal-motorista'));
     
     // Gatilho para Novo Motorista
     $('#btn-novo-motorista').on('click', function() {
@@ -24,11 +24,11 @@ $(function () {
         limparValidacao($('#input-cnh_expiration'));
         limparValidacao($('#input-email'));
 
-        motoristaModal.show();
+        modalMotorista.show();
     });
 
     // Gatilho para Editar Motorista
-    $(document).on('click', '.btn-editar', function() {
+    $('.btn-editar').on('click', function() {
         const driver = $(this).data('driver');
 
         $('#modal-title').text('Editar motorista: ' + driver.name);
@@ -50,11 +50,11 @@ $(function () {
         limparValidacao($('#input-cpf'));
         limparValidacao($('#input-cnh'));
 
-        motoristaModal.show();
+        modalMotorista.show();
     });
 
     //Gatilho para excluir motorista
-    $(document).on('submit', '.form-delete', function(e) {
+    $('.form-delete').on('submit', function(e) {
         e.preventDefault();
 
         const name = $(this).data('name');

@@ -88,7 +88,7 @@
         </div>
 
         <!-- Modal Nova Viagem -->
-        <div class="modal fade" id="modalViagem" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="modal-viagem" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content border-0 shadow">
                     <div class="modal-header border-bottom-0 pb-0">
@@ -177,55 +177,19 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+            @vite('resources/js/trips.js')
+
+        <script>
+                window.app = {
+                    routes: {
+                        trips: {
+                            store: "{{ route('trips.store') }}",
+                            base: "{{ url('viagens') }}"
+                        }
+                    }
+                };
+        </script>
+    @endpush
 @endsection
-
-@push('scripts')
-    <script type="module">
-        $(document).ready(function() {
-            const modalViagem = new bootstrap.Modal(document.getElementById('modalViagem'));
-
-            // Função para formatar data do Laravel (Y-m-d H:i:s) para o input datetime-local (Y-m-dTH:i)
-            function formatForInput(dateString) {
-                if (!dateString) return '';
-                return dateString.replace(' ', 'T').substring(0, 16);
-            }
-
-            // Abrir modal NOVA
-            $('#btn-nova-viagem').on('click', function() {
-                $('#modal-title').text('Nova viagem');
-                $('#form-viagem').attr('action', "{{ route('trips.store') }}");
-                $('#method-container').empty();
-                $('#form-viagem')[0].reset();
-                modalViagem.show();
-            });
-
-            // Abrir modal EDITAR
-            $('.btn-edit').on('click', function() {
-                let trip = $(this).data('trip');
-
-                $('#modal-title').text('Editar viagem');
-                $('#form-viagem').attr('action', `/viagens/${trip.id}`);
-                $('#method-container').html('<input type="hidden" name="_method" value="PUT">');
-
-                $('#input-vehicle').val(trip.vehicle_id);
-                $('#input-driver').val(trip.driver_id);
-                $('#input-purpose').val(trip.purpose);
-                $('#input-origin').val(trip.origin);
-                $('#input-destination').val(trip.destination);
-                $('#input-departure').val(formatForInput(trip.departure_time));
-                $('#input-arrival').val(formatForInput(trip.arrival_time));
-                $('#input-status').val(trip.status);
-                $('#input-observations').val(trip.observations);
-
-                modalViagem.show();
-            });
-
-            // Confirmar Exclusão
-            $('.form-delete').on('submit', function(e) {
-                if (!confirm('Tem certeza que deseja excluir esta viagem?')) {
-                    e.preventDefault();
-                }
-            });
-        });
-    </script>
-@endpush
