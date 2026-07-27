@@ -32,7 +32,7 @@
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light border-bottom">
+                        <thead class="custom-table-header border-bottom">
                             <tr>
                                 <th class="ps-4 py-3 text-uppercase fs-8 text-muted fw-semibold">Nome</th>
                                 <th class="py-3 text-uppercase fs-8 text-muted fw-semibold">E-mail</th>

@@ -26,7 +26,7 @@
         <div class="card shadow-sm border-0">
             <div class="card-body p-0 table-responsive">
                 <table class="table table-hover align-middle mb-0">
-                    <thead>
+                    <thead class="custom-table-header">
                         <tr>
                             <th class="ps-4">Placa</th>
                             <th>Veículo</th>

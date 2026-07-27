@@ -1,0 +1,20 @@
+#theme-toggle::after {
+    display: none;
+}
+
+/* Cores padrão para o tema Light */
+.custom-table-header {
+    --bs-table-bg: #f2f2f2;
+    /* Fundo azul claro no light */
+    --bs-table-color: #191919;
+    /* Texto azul escuro no light */
+}
+
+/* Cores customizadas quando o tema Dark estiver ativo */
+[data-bs-theme="dark"] .custom-table-header,
+.custom-table-header[data-bs-theme="dark"] {
+    --bs-table-bg: #191919;
+    /* Fundo azul escuro no dark */
+    --bs-table-color: #f2f2f2;
+    /* Texto azul claro no dark */
+}
