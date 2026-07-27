@@ -165,7 +165,8 @@
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-outline-secondary px-4 rounded-3">Salvar Cadastro</button>
+                            <button type="submit" class="btn btn-outline-secondary px-4 rounded-3">Salvar
+                                Cadastro</button>
                         </div>
                     </form>
                 </div>
@@ -174,7 +175,6 @@
     </div>
 
     @push('scripts')
-
         @vite('resources/js/drivers.js')
 
         <script>

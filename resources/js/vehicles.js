@@ -4,14 +4,13 @@ import { confirmDelete } from './sweetalert';
 
 $(function () {
     // Inicializa a instância do Modal do Bootstrap
-    const modalVeiculo = new Modal(
-        document.getElementById("modal-veiculo"),
-    );
+    const modalVeiculo = new Modal(document.getElementById("modal-veiculo"));
 
     // 1. Abrir modal para NOVO VEÍCULO
     $("#btn-novo-veiculo").on("click", function () {
+        console.log('teste');
         $("#modal-title").text("Novo veículo");
-        $("#form-veiculo").attr("action", "{{ route('vehicles.store') }}");
+        $("#form-veiculo").attr("action", window.app.routes.vehicles.store);
         $("#method-container").empty(); // Remove o PUT
         $("#form-veiculo")[0].reset(); // Limpa os campos
         modalVeiculo.show();
@@ -23,7 +22,7 @@ $(function () {
         let vehicle = $(this).data("vehicle");
 
         $("#modal-title").text("Editar veículo: " + vehicle.plate);
-        $("#form-veiculo").attr("action", `/veiculos/${vehicle.id}`); // Ajuste para a sua rota exata
+        $("#form-veiculo").attr("action", `${window.app.routes.vehicles.base}/${vehicle.id}`); // Ajuste para a sua rota exata
         $("#method-container").html(
             '<input type="hidden" name="_method" value="PUT">',
         );

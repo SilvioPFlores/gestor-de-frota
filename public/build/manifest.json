@@ -1,4 +1,8 @@
 {
+  "_sweetalert-NanH6EHu.js": {
+    "file": "assets/sweetalert-NanH6EHu.js",
+    "name": "sweetalert"
+  },
   "resources/css/app.css": {
     "file": "assets/app-BW1ug5ch.css",
     "name": "app",
@@ -9,9 +13,30 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-_8A_pej-.js",
+    "file": "assets/app-BOUsCaaW.js",
     "name": "app",
     "src": "resources/js/app.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_sweetalert-NanH6EHu.js"
+    ]
+  },
+  "resources/js/drivers.js": {
+    "file": "assets/drivers-DRpOJBuw.js",
+    "name": "drivers",
+    "src": "resources/js/drivers.js",
+    "isEntry": true,
+    "imports": [
+      "_sweetalert-NanH6EHu.js"
+    ]
+  },
+  "resources/js/vehicles.js": {
+    "file": "assets/vehicles-B621b-Bi.js",
+    "name": "vehicles",
+    "src": "resources/js/vehicles.js",
+    "isEntry": true,
+    "imports": [
+      "_sweetalert-NanH6EHu.js"
+    ]
   }
 }

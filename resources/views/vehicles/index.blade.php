@@ -144,7 +144,8 @@
                         </div>
 
                         <div class="d-flex justify-content-end border-top pt-3">
-                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-secondary me-2"
+                                data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-primary px-4">Salvar</button>
                         </div>
                     </form>
@@ -154,16 +155,17 @@
     </div>
 
     @push('scripts')
-    <script>
-        window.app = {
-            routes: {
-                vehicles: {
-                    store: "{{ route('vehicles.store') }}",
-                    base: "{{ url('veiculos') }}"
-                }
-            }
-        };
-    </script>
-    @endpush
+        @vite('resources/js/vehicles.js')
 
+        <script>
+            window.app = {
+                routes: {
+                    vehicles: {
+                        store: "{{ route('vehicles.store') }}",
+                        base: "{{ url('veiculos') }}"
+                    }
+                }
+            };
+        </script>
+    @endpush
 @endsection
