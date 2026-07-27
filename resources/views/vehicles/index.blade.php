@@ -10,7 +10,7 @@
                 <p class="text-muted small mb-0">Cadastro e situação da frota.</p>
             </div>
             <button type="button" class="btn btn-outline-secondary" id="btn-novo-veiculo">
-                <i class="bi bi-plus-lg"></i> + Novo veículo
+                <i class="fa-solid fa-plus me-1 icon"></i>Novo veículo
             </button>
         </div>
 

@@ -7,11 +7,10 @@
 
         <div class="d-flex align-items-center justify-content-between mb-4">
             <div>
-                <h2 class="h4 mb-1 fw-bold text-dark">Viagens</h2>
                 <p class="text-muted small mb-0">Programação operacional da frota: origem, destino e horários.</p>
             </div>
-            <button type="button" class="btn btn-dark" id="btn-nova-viagem">
-                <i class="bi bi-plus-lg"></i> + Nova viagem
+            <button type="button" class="btn btn-outline-secondary" id="btn-nova-viagem">
+                <i class="fa-solid fa-plus me-1 icon"></i>Nova viagem
             </button>
         </div>
 

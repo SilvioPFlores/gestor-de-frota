@@ -10,7 +10,7 @@
                 <p class="text-muted small mb-0">Cadastro de condutores e validade de CNH.</p>
             </div>
             <button type="button" class="btn btn-outline-secondary" id="btn-novo-motorista">
-                <i class="bi bi-plus-lg"></i> + Novo motorista
+                <i class="fa-solid fa-plus me-1 icon"></i>Novo motorista
             </button>
         </div>
 
