@@ -1,5 +1,10 @@
+<style>
+    #theme-toggle::after {
+    display: none;
+}
+</style>
 <div class="dropdown">
-    <button id="theme-toggle" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+    <button id="theme-toggle" class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
         <i id="theme-icon" class="fa-solid fa-circle-half-stroke"></i>
         <span id="theme-text" class="ms-2 d-none d-lg-inline">Automático</span>
     </button>

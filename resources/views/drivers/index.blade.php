@@ -84,7 +84,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center text-muted py-5">
+                                <td colspan="7" class="text-center py-5">
                                     Nenhum motorista cadastrado no momento.
                                 </td>
                             </tr>
@@ -174,15 +174,18 @@
     </div>
 
     @push('scripts')
-    <script>
-        window.app = {
-            routes: {
-                drivers: {
-                    store: "{{ route('drivers.store') }}",
-                    base: "{{ url('motoristas') }}"
+
+        @vite('resources/js/drivers.js')
+
+        <script>
+            window.app = {
+                routes: {
+                    drivers: {
+                        store: "{{ route('drivers.store') }}",
+                        base: "{{ url('motoristas') }}"
+                    }
                 }
-            }
-        };
-    </script>
+            };
+        </script>
     @endpush
 @endsection
