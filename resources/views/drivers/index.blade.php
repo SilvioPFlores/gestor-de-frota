@@ -32,24 +32,24 @@
             </div>
         @endif
 
-        <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0 text-sm">
+        <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+            <div class="card-body p-0 table-responsive">
+                <table class="table table-striped align-middle mb-0">
                     <thead class="custom-table-header">
                         <tr>
-                            <th class="px-4 py-3">Nome</th>
-                            <th class="py-3">CPF</th>
-                            <th class="py-3">CNH</th>
-                            <th class="py-3">Cat.</th>
-                            <th class="py-3">Validade</th>
-                            <th class="py-3">Status</th>
-                            <th class="px-4 py-3 text-end">Ações</th>
+                            <th class="ps-4">Nome</th>
+                            <th>CPF</th>
+                            <th>CNH</th>
+                            <th>Cat.</th>
+                            <th>Validade</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($drivers as $driver)
                             <tr>
-                                <td class="px-4 py-3 fw-bold">{{ $driver->name }}</td>
+                                <td class="ps-4 fw-bold">{{ $driver->name }}</td>
                                 <td>{{ $driver->cpf }}</td>
                                 <td>{{ $driver->cnh }}</td>
                                 <td class="text-uppercase">{{ $driver->cnh_category }}</td>
@@ -63,7 +63,7 @@
                                             class="badge bg-danger-subtle text-danger px-2.5 py-1.5 rounded-pill">Inativo</span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-3 text-end">
+                                <td class="text-end pe-4">
                                     <div class="d-flex justify-content-end align-items-center flex-nowrap gap-2">
                                         <button type="button" class="btn btn-sm btn-outline-primary btn-editar"
                                             data-driver="{{ $driver->toJson() }}" title="Editar motorista">
@@ -164,9 +164,10 @@
                                 for="input-is_active">Motorista Ativo</label>
                         </div>
 
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-outline-secondary px-4 rounded-3">Salvar
-                                Cadastro</button>
+                        <div class="d-flex justify-content-end border-top pt-3">
+                            <button type="button" class="btn btn-secondary me-2"
+                                data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary px-4">Salvar</button>
                         </div>
                     </form>
                 </div>

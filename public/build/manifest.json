@@ -1,10 +1,10 @@
 {
-  "_sweetalert-NanH6EHu.js": {
-    "file": "assets/sweetalert-NanH6EHu.js",
+  "_sweetalert-DMFZOeDe.js": {
+    "file": "assets/sweetalert-DMFZOeDe.js",
     "name": "sweetalert"
   },
   "resources/css/app.css": {
-    "file": "assets/app-sldgfmqk.css",
+    "file": "assets/app-BhBWjjzZ.css",
     "name": "app",
     "names": [
       "app.css"
@@ -13,39 +13,39 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BOUsCaaW.js",
+    "file": "assets/app-CYnNxpcD.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_sweetalert-NanH6EHu.js"
+      "_sweetalert-DMFZOeDe.js"
     ]
   },
   "resources/js/drivers.js": {
-    "file": "assets/drivers-CPMb4UDc.js",
+    "file": "assets/drivers-DiLZpXSi.js",
     "name": "drivers",
     "src": "resources/js/drivers.js",
     "isEntry": true,
     "imports": [
-      "_sweetalert-NanH6EHu.js"
+      "_sweetalert-DMFZOeDe.js"
     ]
   },
   "resources/js/trips.js": {
-    "file": "assets/trips-DIMnlySh.js",
+    "file": "assets/trips-CFTcF_-e.js",
     "name": "trips",
     "src": "resources/js/trips.js",
     "isEntry": true,
     "imports": [
-      "_sweetalert-NanH6EHu.js"
+      "_sweetalert-DMFZOeDe.js"
     ]
   },
   "resources/js/vehicles.js": {
-    "file": "assets/vehicles-B621b-Bi.js",
+    "file": "assets/vehicles-B_44EpKl.js",
     "name": "vehicles",
     "src": "resources/js/vehicles.js",
     "isEntry": true,
     "imports": [
-      "_sweetalert-NanH6EHu.js"
+      "_sweetalert-DMFZOeDe.js"
     ]
   }
 }

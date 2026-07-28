@@ -41,14 +41,10 @@ $(function () {
     });
 
     // 3. Validação de Exclusão
-    $(".form-delete").on("submit", function (e) {
-        if (
-            !confirm(
-                "Tem certeza que deseja excluir este veículo? Esta ação não pode ser desfeita.",
-            )
-        ) {
-            e.preventDefault();
-        }
+    $('.form-delete').on('submit', function(e) {
+        e.preventDefault();
+        
+        confirmDelete(this, 'Tem certeza que deseja excluir este veículo?<br>Todas as viagens dele também serão excluídas.');
     });
 
     // 4. Máscara Inteligente para Placa (Mercosul e Antiga)
@@ -101,4 +97,8 @@ $(function () {
         // Atualiza o campo com a string tratada
         $(this).val(formatada);
     });
+
+    setTimeout(function() {
+        $('.alert').fadeOut('slow');
+    }, 4000);
 });

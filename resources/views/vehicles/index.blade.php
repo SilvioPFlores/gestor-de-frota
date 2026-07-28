@@ -23,9 +23,9 @@
         @endif
 
         <!-- Tabela de Veículos -->
-        <div class="card shadow-sm border-0">
+        <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
             <div class="card-body p-0 table-responsive">
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-striped align-middle mb-0">
                     <thead class="custom-table-header">
                         <tr>
                             <th class="ps-4">Placa</th>
@@ -45,7 +45,11 @@
                                 <td>{{ number_format($vehicle->current_km, 0, ',', '.') }}</td>
                                 <td>
                                     <!-- Badges dinâmicas baseadas no status (Opcional: você pode customizar as cores) -->
-                                    <span class="badge bg-secondary rounded-pill px-3 py-2 fw-medium">
+                                    <span class="badge rounded-pill px-3 py-2 fw-medium
+                                        @if ($vehicle->status == 'Manutenção') bg-secondary
+                                        @elseif($vehicle->status == 'Inativo') bg-danger 
+                                        @elseif($vehicle->status == 'Em Uso') bg-primary 
+                                        @else bg-success @endif">
                                         {{ $vehicle->status }}
                                     </span>
                                 </td>

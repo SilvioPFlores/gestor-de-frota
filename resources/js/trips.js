@@ -46,6 +46,11 @@ $(function () {
     // Confirmar Exclusão
     $('.form-delete').on('submit', function (e) {
         e.preventDefault();
+        
         confirmDelete(this, `Deseja realmente excluir esta viagem?`);
     });
+
+    setTimeout(function() {
+        $('.alert').fadeOut('slow');
+    }, 4000);
 });

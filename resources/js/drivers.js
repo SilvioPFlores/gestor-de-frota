@@ -58,7 +58,7 @@ $(function () {
         e.preventDefault();
 
         const name = $(this).data('name');
-        confirmDelete(this, `Deseja realmente excluir <strong>${name}</strong>?`);
+        confirmDelete(this, `Deseja realmente excluir <strong>${name}</strong>?<br>Todas as viagens dele também serão excluídas.`);
     });
 
     function aplicarValido(elemento) {
@@ -160,6 +160,10 @@ $(function () {
         checkEmail(val) ? aplicarValido($(this)) : aplicarInvalido($(this));
     });
 
+    setTimeout(function() {
+        $('.alert').fadeOut('slow');
+    }, 4000);
+
     function checkName(nome) {
         let regexNome = /^[a-zA-ZÀ-ÿ']+( [a-zA-ZÀ-ÿ']+)+$/;
         return regexNome.test(nome.trim());
@@ -237,4 +241,4 @@ $(function () {
         return regexEmail.test(email);
     }
 
-    });
+});

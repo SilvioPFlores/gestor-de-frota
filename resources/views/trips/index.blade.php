@@ -21,9 +21,9 @@
             </div>
         @endif
 
-        <div class="card shadow-sm border-0">
+        <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
             <div class="card-body p-0 table-responsive">
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-striped align-middle mb-0">
                     <thead class="custom-table-header">
                         <tr>
                             <th class="ps-4">Saída</th>
@@ -64,7 +64,7 @@
                                         </button>
 
                                         <!-- Removemos as margens padrão do form com m-0 -->
-                                        <form action="{{ route('trips.destroy', $trip) }}" method="POST" class="m-0">
+                                        <form action="{{ route('trips.destroy', $trip) }}" method="POST" class="m-0 form-delete">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir">
@@ -169,7 +169,9 @@
                             </div>
 
                             <div class="d-flex justify-content-end border-top pt-3">
-                                <button type="submit" class="btn btn-dark px-4 w-100">Salvar</button>
+                                <button type="button" class="btn btn-secondary me-2"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary px-4">Salvar</button>
                             </div>
                         </form>
                     </div>
@@ -179,17 +181,17 @@
     </div>
 
     @push('scripts')
-            @vite('resources/js/trips.js')
+        @vite('resources/js/trips.js')
 
         <script>
-                window.app = {
-                    routes: {
-                        trips: {
-                            store: "{{ route('trips.store') }}",
-                            base: "{{ url('viagens') }}"
-                        }
+            window.app = {
+                routes: {
+                    trips: {
+                        store: "{{ route('trips.store') }}",
+                        base: "{{ url('viagens') }}"
                     }
-                };
+                }
+            };
         </script>
     @endpush
 @endsection
