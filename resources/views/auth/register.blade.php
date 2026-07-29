@@ -251,11 +251,15 @@
             }
 
             $name.on('blur', function() {
-                validateName();
+                if ($name.val().length > 0) {
+                    validateName();
+                }
             });
 
             $email.on('blur', function() {
-                validateEmail();
+                if ($email.val().length > 0) {
+                    validateEmail();
+                }
             })
 
             $password.on('keyup', function() {
