@@ -11,9 +11,7 @@ $(function () {
     // Função para validar o formato do e-mail usando Regex
     function validateEmail() {
         const emailVal = $email.val().trim();
-        const dominioPermitido = "unifesp.br";
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const hasDominio = emailVal.split("@")[1];
 
         if (emailVal.length === 0) {
             $email.addClass("is-invalid").removeClass("is-valid");
@@ -24,10 +22,6 @@ $(function () {
             $emailError
                 .text("Por favor, insira um endereço de e-mail válido.")
                 .show();
-            return false;
-        } else if (hasDominio !== dominioPermitido) {
-            $email.addClass("is-invalid").removeClass("is-valid");
-            $emailError.text("O email precisa ser @unifesp.br").show();
             return false;
         } else {
             $email.addClass("is-valid").removeClass("is-invalid");
