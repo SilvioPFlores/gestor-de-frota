@@ -9,6 +9,7 @@ export default defineConfig({
                 'resources/js/app.js',
 
                 'resources/js/register.js',
+                'resources/js/forgot-password.js',
                 'resources/js/drivers.js',
                 'resources/js/vehicles.js',
                 'resources/js/trips.js',

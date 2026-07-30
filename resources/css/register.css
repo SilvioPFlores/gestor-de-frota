@@ -1,15 +1,17 @@
-.legend-size {
-    font-size: 0.8rem;
+.password-requirements {
+    line-height: 1.7;
 }
 
-.normal {
-    color: var(--bs-secondary-color);
+.password-requirement {
+    color: var(--bs-danger);
+    transition: color 0.2s ease;
 }
 
-.valido {
+.password-requirement.valid {
     color: var(--bs-success);
 }
 
-.invalido {
-    color: var(--bs-danger);
+.password-requirement i {
+    width: 1rem;
+    text-align: center;
 }

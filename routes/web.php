@@ -4,21 +4,23 @@ use App\Http\Controllers\{ProfileController,UserController,TripController,Vehicl
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    //return view('welcome');
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::get('/limpar-tudo', function() {
     Artisan::call('optimize:clear');
     return "Cache limpo com sucesso!";
 });
 
+/*Route::get('/', function () {
+    //return view('welcome');
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');*/
+
+Route::get('/', function () { return redirect()->route('dashboard'); });
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -42,7 +44,7 @@ Route::middleware('auth')->group(function () {
 
 });
    
-Route::middleware(['auth', 'can:gerenciar usuarios'])->group(function () {
+Route::middleware(['auth', 'verified', 'can:gerenciar usuarios'])->group(function () {
     Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
     Route::put('/usuarios/{user}', [UserController::class, 'update'])->name('users.update');
 });

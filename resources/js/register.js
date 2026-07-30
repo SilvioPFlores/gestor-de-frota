@@ -83,6 +83,20 @@ $(function () {
     // FORÇA DA SENHA
     // ==========================================================
 
+    function updatePasswordRequirement($element, isValid) {
+        const $icon = $element.find("i");
+
+        if (isValid) {
+            $element.addClass("valid").removeClass("invalid");
+
+            $icon.removeClass("fa-circle-xmark").addClass("fa-circle-check");
+        } else {
+            $element.addClass("invalid").removeClass("valid");
+
+            $icon.removeClass("fa-circle-check").addClass("fa-circle-xmark");
+        }
+    }
+
     function validatePasswordStrength() {
         const val = $password.val();
 
@@ -92,39 +106,15 @@ $(function () {
         const hasNumber = /[0-9]/.test(val);
         const hasSpecial = /[!@#$%^&*(),.?":{}|/<>]/.test(val);
 
-        if (!minLength) {
-            $("#idDivLength").addClass("invalido").removeClass("valido normal");
-        } else {
-            $("#idDivLength").addClass("valido").removeClass("invalido normal");
-        }
+        updatePasswordRequirement($("#idDivLength"), minLength);
 
-        if (!hasUppercase) {
-            $("#idDivUpper").addClass("invalido").removeClass("valido normal");
-        } else {
-            $("#idDivUpper").addClass("valido").removeClass("invalido normal");
-        }
+        updatePasswordRequirement($("#idDivUpper"), hasUppercase);
 
-        if (!hasLowercase) {
-            $("#idDivLower").addClass("invalido").removeClass("valido normal");
-        } else {
-            $("#idDivLower").addClass("valido").removeClass("invalido normal");
-        }
+        updatePasswordRequirement($("#idDivLower"), hasLowercase);
 
-        if (!hasNumber) {
-            $("#idDivNumber").addClass("invalido").removeClass("valido normal");
-        } else {
-            $("#idDivNumber").addClass("valido").removeClass("invalido normal");
-        }
+        updatePasswordRequirement($("#idDivNumber"), hasNumber);
 
-        if (!hasSpecial) {
-            $("#idDivSpecial")
-                .addClass("invalido")
-                .removeClass("valido normal");
-        } else {
-            $("#idDivSpecial")
-                .addClass("valido")
-                .removeClass("invalido normal");
-        }
+        updatePasswordRequirement($("#idDivSpecial"), hasSpecial);
 
         const passwordIsValid =
             minLength &&
@@ -182,8 +172,7 @@ $(function () {
     $name.on("blur", function () {
         if ($name.val().trim().length > 0) {
             validateName();
-        }
-        else{
+        } else {
             $name.removeClass("is-valid is-invalid");
             $nameLength.hide();
             return false;
@@ -193,8 +182,7 @@ $(function () {
     $email.on("blur", function () {
         if ($email.val().trim().length > 0) {
             validateEmail();
-        }
-        else{
+        } else {
             $email.removeClass("is-valid is-invalid");
             $emailStrengthError.text("").show();
             return false;
@@ -213,13 +201,7 @@ $(function () {
 
     $password.on("blur", function () {
         if ($password.val().trim().length == 0) {
-            
             $password.removeClass("is-valid is-invalid");
-            $("#idDivLength").addClass("normal").removeClass("valido invalido");
-            $("#idDivUpper").addClass("normal").removeClass("valido invalido");
-            $("#idDivLower").addClass("normal").removeClass("valido invalido");
-            $("#idDivNumber").addClass("normal").removeClass("valido invalido");
-            $("#idDivSpecial").addClass("normal").removeClass("valido invalido");
             return false;
         }
     });
@@ -279,17 +261,6 @@ $(function () {
 
             return false;
         }
-
-        // Tudo certo: mostra loading
-
-        $btnSubmit.html(`
-        <span
-            class="spinner-border spinner-border-sm me-2"
-            role="status"
-            aria-hidden="true">
-        </span>
-        Cadastrando...
-    `);
 
         // Pequeno atraso para permitir o submit
         setTimeout(function () {

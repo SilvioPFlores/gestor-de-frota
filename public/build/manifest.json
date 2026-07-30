@@ -11,7 +11,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-Bk_Uw8yg.css",
+    "file": "assets/app-BzC5vp14.css",
     "name": "app",
     "names": [
       "app.css"
@@ -39,8 +39,17 @@
       "_sweetalert-BadV5bBD.js"
     ]
   },
+  "resources/js/forgot-password.js": {
+    "file": "assets/forgot-password-BWz6UQTw.js",
+    "name": "forgot-password",
+    "src": "resources/js/forgot-password.js",
+    "isEntry": true,
+    "imports": [
+      "_jquery-C4uiKtAb.js"
+    ]
+  },
   "resources/js/register.js": {
-    "file": "assets/register-DMo6jFCY.js",
+    "file": "assets/register-Ber6svv9.js",
     "name": "register",
     "src": "resources/js/register.js",
     "isEntry": true,
