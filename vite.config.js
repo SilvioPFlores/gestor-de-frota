@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.css', 
                 'resources/js/app.js',
 
+                'resources/js/register.js',
                 'resources/js/drivers.js',
                 'resources/js/vehicles.js',
                 'resources/js/trips.js',

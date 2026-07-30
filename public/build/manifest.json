@@ -1,10 +1,17 @@
 {
-  "_sweetalert-DMFZOeDe.js": {
-    "file": "assets/sweetalert-DMFZOeDe.js",
-    "name": "sweetalert"
+  "_jquery-C4uiKtAb.js": {
+    "file": "assets/jquery-C4uiKtAb.js",
+    "name": "jquery"
+  },
+  "_sweetalert-BadV5bBD.js": {
+    "file": "assets/sweetalert-BadV5bBD.js",
+    "name": "sweetalert",
+    "imports": [
+      "_jquery-C4uiKtAb.js"
+    ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-BhBWjjzZ.css",
+    "file": "assets/app-Bk_Uw8yg.css",
     "name": "app",
     "names": [
       "app.css"
@@ -13,39 +20,52 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-CdfetENt.js",
+    "file": "assets/app-DAlU23Ju.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_sweetalert-DMFZOeDe.js"
+      "_jquery-C4uiKtAb.js",
+      "_sweetalert-BadV5bBD.js"
     ]
   },
   "resources/js/drivers.js": {
-    "file": "assets/drivers-DiLZpXSi.js",
+    "file": "assets/drivers-DcGK5BPU.js",
     "name": "drivers",
     "src": "resources/js/drivers.js",
     "isEntry": true,
     "imports": [
-      "_sweetalert-DMFZOeDe.js"
+      "_jquery-C4uiKtAb.js",
+      "_sweetalert-BadV5bBD.js"
+    ]
+  },
+  "resources/js/register.js": {
+    "file": "assets/register-DMo6jFCY.js",
+    "name": "register",
+    "src": "resources/js/register.js",
+    "isEntry": true,
+    "imports": [
+      "_jquery-C4uiKtAb.js"
     ]
   },
   "resources/js/trips.js": {
-    "file": "assets/trips-CFTcF_-e.js",
+    "file": "assets/trips-DzgmaeuB.js",
     "name": "trips",
     "src": "resources/js/trips.js",
     "isEntry": true,
     "imports": [
-      "_sweetalert-DMFZOeDe.js"
+      "_jquery-C4uiKtAb.js",
+      "_sweetalert-BadV5bBD.js"
     ]
   },
   "resources/js/vehicles.js": {
-    "file": "assets/vehicles-B_44EpKl.js",
+    "file": "assets/vehicles-hmCfZEMx.js",
     "name": "vehicles",
     "src": "resources/js/vehicles.js",
     "isEntry": true,
     "imports": [
-      "_sweetalert-DMFZOeDe.js"
+      "_jquery-C4uiKtAb.js",
+      "_sweetalert-BadV5bBD.js"
     ]
   }
 }

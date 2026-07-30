@@ -1,0 +1,15 @@
+.legend-size {
+    font-size: 0.8rem;
+}
+
+.normal {
+    color: var(--bs-secondary-color);
+}
+
+.valido {
+    color: var(--bs-success);
+}
+
+.invalido {
+    color: var(--bs-danger);
+}
