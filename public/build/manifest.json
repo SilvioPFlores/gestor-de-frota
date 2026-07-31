@@ -3,6 +3,13 @@
     "file": "assets/jquery-C4uiKtAb.js",
     "name": "jquery"
   },
+  "_password-validation-CJw6YVjP.js": {
+    "file": "assets/password-validation-CJw6YVjP.js",
+    "name": "password-validation",
+    "imports": [
+      "_jquery-C4uiKtAb.js"
+    ]
+  },
   "_sweetalert-BadV5bBD.js": {
     "file": "assets/sweetalert-BadV5bBD.js",
     "name": "sweetalert",
@@ -11,7 +18,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-BzC5vp14.css",
+    "file": "assets/app-JD0u7xt5.css",
     "name": "app",
     "names": [
       "app.css"
@@ -40,7 +47,7 @@
     ]
   },
   "resources/js/forgot-password.js": {
-    "file": "assets/forgot-password-Dn9QOxsr.js",
+    "file": "assets/forgot-password-BgOaOsZQ.js",
     "name": "forgot-password",
     "src": "resources/js/forgot-password.js",
     "isEntry": true,
@@ -49,12 +56,23 @@
     ]
   },
   "resources/js/register.js": {
-    "file": "assets/register-Ber6svv9.js",
+    "file": "assets/register-jYDdz5x2.js",
     "name": "register",
     "src": "resources/js/register.js",
     "isEntry": true,
     "imports": [
-      "_jquery-C4uiKtAb.js"
+      "_jquery-C4uiKtAb.js",
+      "_password-validation-CJw6YVjP.js"
+    ]
+  },
+  "resources/js/reset-password.js": {
+    "file": "assets/reset-password-CA2ha5Lb.js",
+    "name": "reset-password",
+    "src": "resources/js/reset-password.js",
+    "isEntry": true,
+    "imports": [
+      "_jquery-C4uiKtAb.js",
+      "_password-validation-CJw6YVjP.js"
     ]
   },
   "resources/js/trips.js": {

@@ -3,12 +3,16 @@
 }
 
 .password-requirement {
-    color: var(--bs-danger);
+    color: var(--bs-secondary-color);
     transition: color 0.2s ease;
 }
 
-.password-requirement.valid {
+.password-requirement.is-valid {
     color: var(--bs-success);
+}
+
+.password-requirement.is-invalid {
+    color: var(--bs-danger);
 }
 
 .password-requirement i {

@@ -56,9 +56,11 @@ $(function () {
             return false;
         }
 
-        // Delay de segurança para permitir que o navegador dispare a requisição POST
-        setTimeout(function () {
-            $btnSubmit.prop("disabled", true);
-        }, 50);
+        $btnSubmit
+            .prop("disabled", true)
+            .html(
+                '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>' +
+                    "Enviando...",
+            );
     });
 });

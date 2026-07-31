@@ -1,4 +1,5 @@
 import $ from "jquery";
+import { createPasswordValidator } from "./password-validation";
 
 $(function () {
     const $name = $("#name");
@@ -13,6 +14,8 @@ $(function () {
 
     const $form = $("#registerForm");
     const $btnSubmit = $("#btnSubmit");
+
+    const passwordValidator = createPasswordValidator();
 
     let passwordBlurred = false;
     let confirmBlurred = false;
@@ -80,61 +83,6 @@ $(function () {
     }
 
     // ==========================================================
-    // FORÇA DA SENHA
-    // ==========================================================
-
-    function updatePasswordRequirement($element, isValid) {
-        const $icon = $element.find("i");
-
-        if (isValid) {
-            $element.addClass("valid").removeClass("invalid");
-
-            $icon.removeClass("fa-circle-xmark").addClass("fa-circle-check");
-        } else {
-            $element.addClass("invalid").removeClass("valid");
-
-            $icon.removeClass("fa-circle-check").addClass("fa-circle-xmark");
-        }
-    }
-
-    function validatePasswordStrength() {
-        const val = $password.val();
-
-        const minLength = val.length >= 8;
-        const hasUppercase = /[A-Z]/.test(val);
-        const hasLowercase = /[a-z]/.test(val);
-        const hasNumber = /[0-9]/.test(val);
-        const hasSpecial = /[!@#$%^&*(),.?":{}|/<>]/.test(val);
-
-        updatePasswordRequirement($("#idDivLength"), minLength);
-
-        updatePasswordRequirement($("#idDivUpper"), hasUppercase);
-
-        updatePasswordRequirement($("#idDivLower"), hasLowercase);
-
-        updatePasswordRequirement($("#idDivNumber"), hasNumber);
-
-        updatePasswordRequirement($("#idDivSpecial"), hasSpecial);
-
-        const passwordIsValid =
-            minLength &&
-            hasUppercase &&
-            hasLowercase &&
-            hasNumber &&
-            hasSpecial;
-
-        if (!passwordIsValid) {
-            $password.addClass("is-invalid").removeClass("is-valid");
-
-            return false;
-        }
-
-        $password.addClass("is-valid").removeClass("is-invalid");
-
-        return true;
-    }
-
-    // ==========================================================
     // CONFIRMAÇÃO DE SENHA
     // ==========================================================
 
@@ -146,7 +94,6 @@ $(function () {
             $confirmPassword.removeClass("is-valid is-invalid");
 
             $matchError.hide();
-
             return false;
         }
 
@@ -154,14 +101,11 @@ $(function () {
             $confirmPassword.addClass("is-invalid").removeClass("is-valid");
 
             $matchError.show();
-
             return false;
         }
 
         $confirmPassword.addClass("is-valid").removeClass("is-invalid");
-
         $matchError.hide();
-
         return true;
     }
 
@@ -189,11 +133,9 @@ $(function () {
         }
     });
 
-    $password.on("keyup", function () {
+    $password.on("input", function () {
         passwordBlurred = true;
-
-        validatePasswordStrength();
-
+        passwordValidator.validate();
         if (confirmBlurred) {
             validatePasswordMatch();
         }
@@ -202,7 +144,14 @@ $(function () {
     $password.on("blur", function () {
         if ($password.val().trim().length == 0) {
             $password.removeClass("is-valid is-invalid");
+            passwordValidator.reset();
             return false;
+        }
+    });
+
+    $confirmPassword.on("input", function () {
+        if (confirmBlurred) {
+            validatePasswordMatch();
         }
     });
 
@@ -210,22 +159,6 @@ $(function () {
         if ($confirmPassword.val().length > 0) {
             confirmBlurred = true;
 
-            validatePasswordMatch();
-        }
-    });
-
-    $password.on("input", function () {
-        if (passwordBlurred) {
-            validatePasswordStrength();
-        }
-
-        if (confirmBlurred) {
-            validatePasswordMatch();
-        }
-    });
-
-    $confirmPassword.on("input", function () {
-        if (confirmBlurred) {
             validatePasswordMatch();
         }
     });
@@ -242,7 +175,7 @@ $(function () {
 
         const isEmailOk = validateEmail();
 
-        const isPasswordOk = validatePasswordStrength();
+        const isPasswordOk = passwordValidator.validate();
 
         const isMatchOk = validatePasswordMatch();
 
@@ -262,9 +195,9 @@ $(function () {
             return false;
         }
 
-        // Pequeno atraso para permitir o submit
-        setTimeout(function () {
-            $btnSubmit.prop("disabled", true);
-        }, 50);
+        $btnSubmit
+            .html(
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cadastrando...'
+            );
     });
 });

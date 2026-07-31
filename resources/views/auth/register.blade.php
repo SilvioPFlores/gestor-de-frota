@@ -52,36 +52,7 @@
             <x-text-input id="password" type="password" name="password" :error="$errors->has('password')" required
                 autocomplete="new-password" />
 
-            <div class="password-requirements mt-2 small">
-                <div class="text-body-secondary mb-1">
-                    A senha deve conter:
-                </div>
-
-                <div id="idDivLength" class="password-requirement">
-                    <i class="fa-solid fa-circle-xmark me-1"></i>
-                    <span>8 caracteres</span>
-                </div>
-
-                <div id="idDivUpper" class="password-requirement">
-                    <i class="fa-solid fa-circle-xmark me-1"></i>
-                    <span>Uma letra maiúscula</span>
-                </div>
-
-                <div id="idDivLower" class="password-requirement">
-                    <i class="fa-solid fa-circle-xmark me-1"></i>
-                    <span>Uma letra minúscula</span>
-                </div>
-
-                <div id="idDivNumber" class="password-requirement">
-                    <i class="fa-solid fa-circle-xmark me-1"></i>
-                    <span>Um número</span>
-                </div>
-
-                <div id="idDivSpecial" class="password-requirement">
-                    <i class="fa-solid fa-circle-xmark me-1"></i>
-                    <span>Um caractere especial</span>
-                </div>
-            </div>
+            <x-password-requirements />
 
             <x-input-error :messages="$errors->get('password')" />
         </div>
