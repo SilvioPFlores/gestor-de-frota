@@ -3,8 +3,8 @@
     "file": "assets/jquery-C4uiKtAb.js",
     "name": "jquery"
   },
-  "_password-validation-CJw6YVjP.js": {
-    "file": "assets/password-validation-CJw6YVjP.js",
+  "_password-validation-D-S5AXvw.js": {
+    "file": "assets/password-validation-D-S5AXvw.js",
     "name": "password-validation",
     "imports": [
       "_jquery-C4uiKtAb.js"
@@ -56,23 +56,23 @@
     ]
   },
   "resources/js/register.js": {
-    "file": "assets/register-jYDdz5x2.js",
+    "file": "assets/register-DhWvMKFK.js",
     "name": "register",
     "src": "resources/js/register.js",
     "isEntry": true,
     "imports": [
       "_jquery-C4uiKtAb.js",
-      "_password-validation-CJw6YVjP.js"
+      "_password-validation-D-S5AXvw.js"
     ]
   },
   "resources/js/reset-password.js": {
-    "file": "assets/reset-password-CA2ha5Lb.js",
+    "file": "assets/reset-password-EqIGu2ef.js",
     "name": "reset-password",
     "src": "resources/js/reset-password.js",
     "isEntry": true,
     "imports": [
       "_jquery-C4uiKtAb.js",
-      "_password-validation-CJw6YVjP.js"
+      "_password-validation-D-S5AXvw.js"
     ]
   },
   "resources/js/trips.js": {

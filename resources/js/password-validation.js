@@ -48,7 +48,6 @@ export function createPasswordValidator(passwordSelector = "#password") {
 
     function validate() {
         const value = $password.val() || "";
-        console.log("VALIDANDO SENHA:", value);
         let isValid = true;
 
         Object.values(requirements).forEach((requirement) => {

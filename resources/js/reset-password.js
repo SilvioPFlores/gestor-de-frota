@@ -51,12 +51,20 @@ $(function () {
     // --------------------------------------------------
 
     $password.on("blur", function () {
-        passwordBlurred = true;
 
-        passwordValidator.validate();
+        if ($password.val().trim().length != 0) {
+            passwordBlurred = true;
 
-        if (confirmBlurred) {
-            validatePasswordMatch();
+            passwordValidator.validate();
+
+            if (confirmBlurred) {
+                validatePasswordMatch();
+            }
+        }
+        else{
+            $password.removeClass("is-valid is-invalid");
+            passwordValidator.reset();
+            return false;
         }
     });
 
