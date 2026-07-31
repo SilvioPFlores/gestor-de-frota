@@ -24,6 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     // Rotas de Veiculos
     Route::get('/veiculos', [VehicleController::class, 'index'])->name('vehicles.index');
     Route::post('/veiculos', [VehicleController::class, 'store'])->name('vehicles.store');
@@ -36,7 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/motoristas/{driver}', [DriverController::class, 'update'])->name('drivers.update');
     Route::delete('/motoristas/{driver}', [DriverController::class, 'destroy'])->name('drivers.destroy');
 
-    // Rotas de Motoristas
+    // Rotas de Viagens
     Route::get('/viagens', [TripController::class, 'index'])->name('trips.index');
     Route::post('/viagens', [TripController::class, 'store'])->name('trips.store');
     Route::put('/viagens/{trip}', [TripController::class, 'update'])->name('trips.update');

@@ -26,8 +26,15 @@ class UserController extends Controller
         ]);
 
         // Evita que o Admin logado tire o seu próprio acesso de Admin
-        if ($user->id === auth()->id() && $request->role !== 'Admin') {
-            return redirect()->back()->with('error', 'Você não pode remover seu próprio nível de Administrador!');
+        if (
+            $user->id === auth()->id() &&
+            $user->hasRole('Admin') &&
+            $request->role !== 'Admin'
+        ) {
+            return redirect()->back()->with(
+                'error',
+                'Você não pode remover seu próprio nível de Administrador!'
+            );
         }
 
         // syncRoles remove o nível antigo e coloca o novo

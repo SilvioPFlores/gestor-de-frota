@@ -1,36 +1,46 @@
 <x-guest-layout title="Verificar e-mail">
 
     <div class="text-center mb-4">
+
         <div class="mb-3">
             <i class="fa-solid fa-envelope-circle-check fa-3x text-primary"></i>
         </div>
+
         <h4 class="fw-bold mb-2">
             Verifique seu e-mail
         </h4>
+
         <p class="text-body-secondary mb-0">
             Enviamos um link de confirmação para o endereço de e-mail
             informado no cadastro.
         </p>
     </div>
 
-    @if (session('status') == 'verification-link-sent')
-        <div class="alert alert-success small d-flex align-items-center gap-2" role="alert">
-            <i class="fa-solid fa-circle-check"></i>
+    @if (session('status') === 'verification-link-sent')
+        <div class="alert alert-success small d-flex align-items-start gap-2" role="alert">
+            <i class="fa-solid fa-circle-check mt-1"></i>
             <div>
+                <strong>E-mail reenviado!</strong>
+                <br>
                 Um novo link de verificação foi enviado para o seu
                 endereço de e-mail.
             </div>
         </div>
     @endif
 
-    <div class="alert alert-light border text-body-secondary small" role="alert">
-        <div class="d-flex gap-2">
+    <div class="alert alert-light border small text-body-secondary" role="alert">
+
+        <div class="d-flex align-items-start gap-2">
             <i class="fa-solid fa-circle-info mt-1"></i>
             <div>
+                <strong class="text-body">
+                    Ainda não recebeu?
+                </strong>
+                <br>
                 Acesse sua caixa de entrada e clique no link recebido
                 para confirmar seu endereço de e-mail.
                 <br>
-                <span class="text-body-secondary">
+                <span>
                     Caso não encontre a mensagem, verifique também a
                     pasta de spam ou lixo eletrônico.
                 </span>
@@ -55,5 +65,4 @@
             </button>
         </form>
     </div>
-
 </x-guest-layout>

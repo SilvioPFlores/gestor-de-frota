@@ -31,6 +31,7 @@ class RegisteredUserController extends Controller
             'name' => [
                 'required',
                 'string',
+                'min:5',
                 'max:255',
             ],
             'email' => [
