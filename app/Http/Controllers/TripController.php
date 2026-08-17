@@ -11,10 +11,17 @@ class TripController extends Controller
 {
     public function index()
     {
-        // Busca as viagens com os relacionamentos para evitar N+1 queries
-        $trips = Trip::with(['vehicle', 'driver'])->orderBy('departure_time', 'desc')->get();
-        
-        // Busca veículos e motoristas (você pode adicionar um ->where('status', 'Disponível') se quiser)
+        $user = auth()->user();
+
+        $query = Trip::with(['user', 'vehicle', 'driver'])
+            ->orderBy('departure_time', 'desc');
+
+        if ($user->hasRole('Solicitante')) {
+            $query->where('user_id', $user->id);
+        }
+
+        $trips = $query->get();
+
         $vehicles = Vehicle::all();
         $drivers = Driver::all();
 
@@ -24,42 +31,147 @@ class TripController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'vehicle_id' => 'required|exists:vehicles,id',
-            'driver_id' => 'required|exists:drivers,id',
             'purpose' => 'required|string|max:255',
             'origin' => 'required|string|max:255',
             'destination' => 'required|string|max:255',
             'departure_time' => 'required|date',
             'arrival_time' => 'nullable|date|after_or_equal:departure_time',
-            'status' => 'required|string',
-            'observations' => 'nullable|string'
+            'observations' => 'nullable|string',
         ]);
 
-        Trip::create($validated);
-        return back()->with('success', 'Viagem cadastrada com sucesso!');
+        Trip::create([
+            'user_id' => auth()->id(),
+            'purpose' => $validated['purpose'],
+            'origin' => $validated['origin'],
+            'destination' => $validated['destination'],
+            'departure_time' => $validated['departure_time'],
+            'arrival_time' => $validated['arrival_time'] ?? null,
+            'observations' => $validated['observations'] ?? null,
+            'status' => 'Solicitada',
+        ]);
+
+        return back()->with(
+            'success',
+            'Viagem solicitada com sucesso!'
+        );
     }
 
+    /**
+     * Atualiza os dados da solicitação.
+     */
     public function update(Request $request, Trip $trip)
     {
         $validated = $request->validate([
-            'vehicle_id' => 'required|exists:vehicles,id',
-            'driver_id' => 'required|exists:drivers,id',
             'purpose' => 'required|string|max:255',
             'origin' => 'required|string|max:255',
             'destination' => 'required|string|max:255',
             'departure_time' => 'required|date',
             'arrival_time' => 'nullable|date|after_or_equal:departure_time',
-            'status' => 'required|string',
-            'observations' => 'nullable|string'
+            'observations' => 'nullable|string',
         ]);
 
         $trip->update($validated);
-        return back()->with('success', 'Viagem atualizada com sucesso!');
+
+        $mensagem = 'Viagem atualizada com sucesso!';
+        
+        if ($request->ajax()) {
+            session()->flash('success', $mensagem);
+            return response()->json(['success' => true]);
+        }
+
+        return back()->with(
+            'success',
+            $mensagem
+        );
     }
 
-    public function destroy(Trip $trip)
+    /**
+     * Altera o veículo da viagem.
+     */
+    public function updateVehicle(Request $request, Trip $trip)
     {
-        $trip->delete();
-        return back()->with('success', 'Viagem cancelada/excluída com sucesso!');
+        $validated = $request->validate([
+            'vehicle_id' => 'required|exists:vehicles,id',
+        ]);
+
+        $trip->update($validated);
+
+        $mensagem = 'Veículo da viagem atualizado com sucesso!';
+        
+        if ($request->ajax()) {
+            session()->flash('success', $mensagem);
+            return response()->json(['success' => true]);
+        }
+
+        return back()->with(
+            'success',
+            $mensagem
+        );
+    }
+
+    /**
+     * Altera o motorista da viagem.
+     */
+    public function updateDriver(Request $request, Trip $trip)
+    {
+        $validated = $request->validate([
+            'driver_id' => 'required|exists:drivers,id',
+        ]);
+
+        $trip->update($validated);
+
+        $mensagem = 'Motorista da viagem atualizado com sucesso!';
+        
+        if ($request->ajax()) {
+            session()->flash('success', $mensagem);
+            return response()->json(['success' => true]);
+        }
+
+        return back()->with(
+            'success',
+            $mensagem
+        );
+    }
+
+    /**
+     * Altera o status da viagem.
+     */
+    public function updateStatus(Request $request, Trip $trip)
+    {
+        $validated = $request->validate([
+            'status' => 'required|string|in:Solicitada,Agendada,Em andamento,Concluida,Cancelada',
+        ]);
+
+        $trip->update([
+            'status' => $validated['status'],
+        ]);
+
+        $mensagem = 'Status da viagem atualizado com sucesso!';
+        
+        if ($request->ajax()) {
+            session()->flash('success', $mensagem);
+            return response()->json(['success' => true]);
+        }
+
+        return back()->with(
+            'success',
+            $mensagem
+        );
+    }
+
+    /**
+     * Cancela a viagem.
+     */
+    public function cancel(Trip $trip)
+    {
+        $trip->update([
+            'status' => 'Cancelada',
+            'observations' => 'Viagem cancelada pelo usuário',
+        ]);
+
+        return back()->with(
+            'success',
+            'Viagem cancelada com sucesso!'
+        );
     }
 }

@@ -55,8 +55,8 @@
                                             // Estilização das Badges usando cores do Bootstrap 5
                                             $badgeClass = match ($roleName) {
                                                 'Admin' => 'bg-danger-subtle text-danger border border-danger-subtle',
-                                                'Gestor'
-                                                    => 'bg-primary-subtle text-primary border border-primary-subtle',
+                                                'Gestor' => 'bg-success-subtle text-success border border-success-subtle',
+                                                'Motorista' => 'bg-primary-subtle text-primary border border-primary-subtle',
                                                 default
                                                     => 'bg-secondary-subtle text-secondary border border-secondary-subtle',
                                             };

@@ -7,36 +7,150 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+
 class RoleAndPermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // 1. Criar as Permissões
-        Permission::create(['name' => 'gerenciar usuarios']);
-        Permission::create(['name' => 'gerenciar veiculos']);
-        Permission::create(['name' => 'ver relatorios']);
+        /*
+        |--------------------------------------------------------------------------
+        | Permissões
+        |--------------------------------------------------------------------------
+        */
 
-        // 2. Criar os Níveis de Acesso (Roles) e atribuir permissões
-        $adminRole = Role::create(['name' => 'Admin']);
-        $adminRole->givePermissionTo(Permission::all()); // Admin pode tudo
+        $permissions = [
 
-        $gestorRole = Role::create(['name' => 'Gestor']);
-        $gestorRole->givePermissionTo(['gerenciar veiculos', 'ver relatorios']);
+            // Usuários
+            'gerenciar usuarios',
 
-        $motoristaRole = Role::create(['name' => 'Motorista']);
-        // Motorista inicialmente não tem permissões administrativas
+            // Veículos
+            'gerenciar veiculos',
 
-        // 3. Criar um Usuário Admin de Teste
-        $adminUser = User::create([
-            'name' => 'Silvio Administrador',
-            'email' => 'admin@frota.com',
-            'password' => Hash::make('12345678'), // Altere depois
+            // Relatórios
+            'ver relatorios',
+
+            // Viagens
+            'viagens.visualizar',
+            'viagens.criar',
+            'viagens.editar',
+            'viagens.editar_dados',
+            'viagens.cancelar',
+            'viagens.alterar_veiculo',
+            'viagens.alterar_motorista',
+            'viagens.alterar_status',
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Roles
+        |--------------------------------------------------------------------------
+        */
+
+        $adminRole = Role::firstOrCreate([
+            'name' => 'Admin',
         ]);
 
-        // Atribuir o nível de Admin a ele
-        $adminUser->assignRole($adminRole);
+        $gestorRole = Role::firstOrCreate([
+            'name' => 'Gestor',
+        ]);
+
+        $motoristaRole = Role::firstOrCreate([
+            'name' => 'Motorista',
+        ]);
+
+        $solicitanteRole = Role::firstOrCreate([
+            'name' => 'Solicitante',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Admin
+        |--------------------------------------------------------------------------
+        |
+        | Admin possui todas as permissões.
+        |
+        */
+
+        $adminRole->syncPermissions(
+            Permission::all()
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Gestor
+        |--------------------------------------------------------------------------
+        |
+        | Gestor possui todas as funcionalidades, exceto
+        | alteração do nível dos usuários.
+        |
+        */
+
+        $gestorRole->syncPermissions([
+            'gerenciar veiculos',
+            'ver relatorios',
+
+            'viagens.visualizar',
+            'viagens.criar',
+            'viagens.editar',
+            'viagens.editar_dados',
+            'viagens.cancelar',
+            'viagens.alterar_veiculo',
+            'viagens.alterar_motorista',
+            'viagens.alterar_status',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Motorista
+        |--------------------------------------------------------------------------
+        */
+
+        $motoristaRole->syncPermissions([
+            'viagens.visualizar',
+            'viagens.alterar_veiculo',
+            'viagens.alterar_motorista',
+            'viagens.alterar_status',
+            'viagens.cancelar',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Solicitante
+        |--------------------------------------------------------------------------
+        */
+
+        $solicitanteRole->syncPermissions([
+            'viagens.visualizar',
+            'viagens.criar',
+            'viagens.editar',
+            'viagens.editar_dados',
+            'viagens.cancelar',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Usuário Admin de teste
+        |--------------------------------------------------------------------------
+        */
+
+        $adminUser = User::firstOrCreate(
+            [
+                'email' => 'admin@frota.com',
+            ],
+            [
+                'name' => 'Silvio Administrador',
+                'password' => Hash::make('1244567890'),
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // Garante que o usuário de teste tenha somente a Role Admin.
+        $adminUser->syncRoles($adminRole);
     }
 }

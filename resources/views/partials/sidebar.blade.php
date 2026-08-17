@@ -16,7 +16,7 @@
                 <span class="sidebar-text">Dashboard</span>
             </a>
         </li>
-        @can('gerenciar usuarios')
+        @can('usuarios.visualizar')
             <li class="nav-item">
                 <a href="{{ route('users.index') }}"
                     class="nav-link d-flex align-items-center {{ request()->routeIs('users.*') ? 'active' : '' }}">
